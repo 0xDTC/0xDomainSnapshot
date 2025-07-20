@@ -6,8 +6,8 @@ class CustomDataTable {
     constructor(tableElement, options = {}) {
         this.table = tableElement;
         this.options = Object.assign({
-            rowsPerPage: -1, // Show all records by default
-            pagingOptions: [10, 25, 50, 100, 250, 500, -1],
+            rowsPerPage: 50, // Show 50 records by default
+            pagingOptions: [50, 100, 250, 500, -1],
             fixedHeader: true
         }, options);
         
@@ -385,7 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const table = document.getElementById('dns_records');
     if (table) {
         const dt = new CustomDataTable(table, {
-            rowsPerPage: -1, // Show all records by default
+            rowsPerPage: 50, // Show 50 records by default
             fixedHeader: true
         });
         
