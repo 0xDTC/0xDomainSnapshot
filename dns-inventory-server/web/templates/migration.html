@@ -1,0 +1,202 @@
+{{define "migration-content"}}
+<div class="migration-page h-full flex flex-col">
+    <!-- Migration Header -->
+    <div class="migration-header bg-gray-800 border-b border-gray-700 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-2xl font-semibold text-white flex items-center gap-3">
+                    <span class="emoji-fix">🚀</span>
+                    Advanced Data Migration
+                </h2>
+                <p class="text-gray-400 mt-2">Import and transform your data with advanced batch processing, templates, and progress tracking</p>
+            </div>
+            <div class="flex items-center space-x-2">
+                <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                <span class="text-sm text-gray-400">Migration System Ready</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Migration Status Cards -->
+    <div class="stats-section bg-gray-800 border-b border-gray-700 p-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <!-- Active Jobs -->
+            <div class="stat-card bg-gray-750 rounded-lg p-4 border border-gray-600">
+                <div class="flex-between-center">
+                    <div>
+                        <p class="text-sm text-gray-400">Active Jobs</p>
+                        <p class="text-2xl font-semibold text-blue-400">0</p>
+                    </div>
+                    <div class="icon-container bg-blue-500 bg-opacity-20 rounded-lg">
+                        <span class="emoji-fix">⚡</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Jobs -->
+            <div class="stat-card bg-gray-750 rounded-lg p-4 border border-gray-600">
+                <div class="flex-between-center">
+                    <div>
+                        <p class="text-sm text-gray-400">Completed</p>
+                        <p class="text-2xl font-semibold text-green-400">0</p>
+                    </div>
+                    <div class="icon-container bg-green-500 bg-opacity-20 rounded-lg">
+                        <span class="emoji-fix">✅</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Records Processed -->
+            <div class="stat-card bg-gray-750 rounded-lg p-4 border border-gray-600">
+                <div class="flex-between-center">
+                    <div>
+                        <p class="text-sm text-gray-400">Records Processed</p>
+                        <p class="text-2xl font-semibold text-white">0</p>
+                    </div>
+                    <div class="icon-container bg-purple-500 bg-opacity-20 rounded-lg">
+                        <span class="emoji-fix">📊</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Templates -->
+            <div class="stat-card bg-gray-750 rounded-lg p-4 border border-gray-600">
+                <div class="flex-between-center">
+                    <div>
+                        <p class="text-sm text-gray-400">Templates</p>
+                        <p class="text-2xl font-semibold text-orange-400">3</p>
+                    </div>
+                    <div class="icon-container bg-orange-500 bg-opacity-20 rounded-lg">
+                        <span class="emoji-fix">📄</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Migration Controls -->
+    <div class="controls-section bg-gray-800 border-b border-gray-700 p-6">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+            <!-- Upload Section -->
+            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 items-stretch sm:items-center">
+                <div class="relative">
+                    <input type="file" id="file-input" class="hidden" accept=".csv,.json,.xlsx" multiple>
+                    <button id="upload-btn" class="btn-primary px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                        </svg>
+                        <span>Upload Files</span>
+                    </button>
+                </div>
+                
+                <select id="template-select" class="input-primary px-4 py-2 rounded-lg border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Template</option>
+                    <option value="godaddy">GoDaddy Import</option>
+                    <option value="cloudflare">Cloudflare Import</option>
+                    <option value="custom">Custom CSV</option>
+                </select>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex space-x-3">
+                <button id="analyze-btn" class="btn-secondary px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-medium transition-colors duration-200 flex items-center space-x-2" disabled>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 00-2-2m0 0V5a2 2 0 012-2h2a2 2 0 002-2"/>
+                    </svg>
+                    <span>Analyze</span>
+                </button>
+                
+                <button id="start-migration-btn" class="btn-primary px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center space-x-2" disabled>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                    </svg>
+                    <span>Start Migration</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Migration Content Area -->
+    <div class="migration-content flex-1 overflow-hidden p-6">
+        <!-- Welcome State -->
+        <div id="welcome-state" class="text-center py-16">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-6xl mb-6">
+                    <span class="emoji-fix">📁</span>
+                </div>
+                <h3 class="text-2xl font-semibold text-white mb-4">Ready for Data Migration</h3>
+                <p class="text-gray-400 mb-8">Upload your CSV, JSON, or Excel files to begin the migration process. Our intelligent system will analyze your data structure and suggest optimal migration strategies.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-gray-750 rounded-lg p-6 border border-gray-600">
+                        <div class="text-3xl mb-4">
+                            <span class="emoji-fix">🔍</span>
+                        </div>
+                        <h4 class="text-lg font-medium text-white mb-2">Smart Analysis</h4>
+                        <p class="text-gray-400 text-sm">Automatically detect data structure, field types, and relationships for optimal migration planning.</p>
+                    </div>
+                    
+                    <div class="bg-gray-750 rounded-lg p-6 border border-gray-600">
+                        <div class="text-3xl mb-4">
+                            <span class="emoji-fix">⚡</span>
+                        </div>
+                        <h4 class="text-lg font-medium text-white mb-2">Batch Processing</h4>
+                        <p class="text-gray-400 text-sm">Process large datasets efficiently with configurable batch sizes and progress tracking.</p>
+                    </div>
+                    
+                    <div class="bg-gray-750 rounded-lg p-6 border border-gray-600">
+                        <div class="text-3xl mb-4">
+                            <span class="emoji-fix">📊</span>
+                        </div>
+                        <h4 class="text-lg font-medium text-white mb-2">Real-time Progress</h4>
+                        <p class="text-gray-400 text-sm">Monitor migration progress with detailed statistics and error reporting.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Results (Hidden by default) -->
+        <div id="analysis-results" class="hidden">
+            <div class="bg-gray-750 rounded-lg p-6 border border-gray-600 mb-6">
+                <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <span class="emoji-fix">📈</span>
+                    Analysis Results
+                </h3>
+                <div id="analysis-content">
+                    <!-- Analysis results will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Migration Progress (Hidden by default) -->
+        <div id="migration-progress" class="hidden">
+            <div class="bg-gray-750 rounded-lg p-6 border border-gray-600">
+                <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <span class="emoji-fix">⚙️</span>
+                    Migration Progress
+                </h3>
+                <div id="progress-content">
+                    <!-- Progress content will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden data for JavaScript -->
+<script type="application/json" id="page-data">
+{
+    "migration_jobs": [],
+    "templates": [],
+    "settings": {}
+}
+</script>
+
+<script>
+    // Initialize migration page
+    document.addEventListener('DOMContentLoaded', function() {
+        const pageData = JSON.parse(document.getElementById('page-data').textContent);
+        MigrationPage.init(pageData);
+    });
+</script>
+{{end}}

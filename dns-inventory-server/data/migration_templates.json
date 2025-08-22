@@ -1,0 +1,150 @@
+[
+  {
+    "id": "godaddy-domains-v1",
+    "name": "GoDaddy Domains (Legacy)",
+    "description": "Template for migrating old GoDaddy domain files (domains.json)",
+    "type": "domains",
+    "field_mappings": {
+      "created_at": "discovery_date",
+      "discovery_date": "discovery_date",
+      "domain": "domain",
+      "status": "status"
+    },
+    "default_settings": {
+      "batch_size": 50,
+      "duplicate_strategy": "merge",
+      "assign_to_users": null,
+      "validate_domains": true,
+      "skip_invalid_records": true,
+      "create_backup": true
+    },
+    "validation_rules": [
+      {
+        "field": "domain",
+        "required": true,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\\.[a-zA-Z]{2,}$"
+      }
+    ],
+    "created_at": "2025-08-18T23:13:31.8187607+05:30",
+    "updated_at": "2025-08-18T23:13:31.8187607+05:30",
+    "created_by": "system",
+    "is_default": true
+  },
+  {
+    "id": "dns-records-v1",
+    "name": "DNS Records (Legacy)",
+    "description": "Template for migrating old DNS record files (dns_records.json)",
+    "type": "dns",
+    "field_mappings": {
+      "created_at": "discovery_date",
+      "data": "data",
+      "discovery_date": "discovery_date",
+      "domain": "domain",
+      "priority": "priority",
+      "subdomain": "subdomain",
+      "ttl": "ttl",
+      "type": "type"
+    },
+    "default_settings": {
+      "batch_size": 100,
+      "duplicate_strategy": "skip",
+      "assign_to_users": null,
+      "validate_domains": false,
+      "skip_invalid_records": true,
+      "create_backup": true
+    },
+    "validation_rules": [
+      {
+        "field": "domain",
+        "required": true
+      },
+      {
+        "field": "type",
+        "required": true,
+        "allowed_values": [
+          "A",
+          "AAAA",
+          "CNAME",
+          "MX",
+          "TXT",
+          "NS",
+          "SOA",
+          "SRV",
+          "PTR"
+        ]
+      },
+      {
+        "field": "data",
+        "required": true
+      }
+    ],
+    "created_at": "2025-08-18T23:13:31.8187607+05:30",
+    "updated_at": "2025-08-18T23:13:31.8187607+05:30",
+    "created_by": "system",
+    "is_default": true
+  },
+  {
+    "id": "org-assets-v1",
+    "name": "Organization Assets (Combined)",
+    "description": "Template for migrating combined org asset files (org_assets.json)",
+    "type": "org_assets",
+    "field_mappings": {
+      "created_at": "discovery_date",
+      "data": "data",
+      "discovery_date": "discovery_date",
+      "domain": "domain",
+      "source": "source",
+      "subdomain": "subdomain",
+      "type": "type"
+    },
+    "default_settings": {
+      "batch_size": 75,
+      "duplicate_strategy": "merge",
+      "assign_to_users": null,
+      "validate_domains": true,
+      "skip_invalid_records": true,
+      "create_backup": true
+    },
+    "validation_rules": [
+      {
+        "field": "domain",
+        "required": true
+      }
+    ],
+    "created_at": "2025-08-18T23:13:31.8187607+05:30",
+    "updated_at": "2025-08-18T23:13:31.8187607+05:30",
+    "created_by": "system",
+    "is_default": true
+  },
+  {
+    "id": "custom-flexible-v1",
+    "name": "Flexible Import",
+    "description": "Flexible template that adapts to various JSON structures",
+    "type": "flexible",
+    "field_mappings": {
+      "created": "discovery_date",
+      "date_created": "discovery_date",
+      "domain_name": "domain",
+      "hostname": "domain",
+      "name": "domain",
+      "record_data": "data",
+      "record_name": "subdomain",
+      "record_type": "type",
+      "record_value": "data",
+      "time_created": "discovery_date"
+    },
+    "default_settings": {
+      "batch_size": 25,
+      "duplicate_strategy": "skip",
+      "assign_to_users": null,
+      "validate_domains": false,
+      "skip_invalid_records": true,
+      "create_backup": true
+    },
+    "validation_rules": [],
+    "created_at": "2025-08-18T23:13:31.8187607+05:30",
+    "updated_at": "2025-08-18T23:13:31.8187607+05:30",
+    "created_by": "system",
+    "is_default": true
+  }
+]

@@ -1,0 +1,23 @@
+# Build artifacts
+dns-inventory-server
+dns-inventory-server.exe
+*.exe
+*.log
+
+# Environment files
+.env
+
+# Temporary files
+*.tmp
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

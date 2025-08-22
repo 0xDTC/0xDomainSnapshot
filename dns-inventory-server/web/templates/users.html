@@ -1,0 +1,253 @@
+{{define "users-content"}}
+<div class="users-page h-full flex flex-col">
+    <!-- Stats Dashboard -->
+    <div class="stats-section bg-gray-800 border-b border-gray-700 p-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <!-- Total Users -->
+            <div class="stat-card bg-gray-750 rounded-lg p-4 border border-gray-600">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-400">Total Users</p>
+                        <p class="text-2xl font-semibold text-white">{{index .Stats "total_users"}}</p>
+                    </div>
+                    <div class="w-10 h-10 bg-blue-500 bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-2.239"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Users -->
+            <div class="stat-card bg-gray-750 rounded-lg p-4 border border-gray-600">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-400">Active Users</p>
+                        <p class="text-2xl font-semibold text-green-400">{{index .Stats "active_users"}}</p>
+                    </div>
+                    <div class="w-10 h-10 bg-green-500 bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Groups -->
+            <div class="stat-card bg-gray-750 rounded-lg p-4 border border-gray-600">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-400">Groups</p>
+                        <p class="text-2xl font-semibold text-white">{{len .Groups}}</p>
+                    </div>
+                    <div class="w-10 h-10 bg-purple-500 bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div class="stat-card bg-gray-750 rounded-lg p-4 border border-gray-600">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-400">System Status</p>
+                        <p class="text-2xl font-semibold text-green-400 status-emoji">✅</p>
+                    </div>
+                    <div class="w-10 h-10 bg-green-500 bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">All systems operational</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls Section -->
+    <div class="controls-section bg-gray-800 border-b border-gray-700 p-6">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+            <!-- Search and Filters -->
+            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 items-stretch sm:items-center">
+                <div class="relative">
+                    <input type="text" 
+                           id="search-input" 
+                           placeholder="Search users..." 
+                           class="input-primary w-full sm:w-80 pl-10 pr-4 py-2 rounded-lg border border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+                
+                <select id="group-filter" class="input-primary px-4 py-2 rounded-lg border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">All Groups</option>
+                    {{range .Groups}}
+                    <option value="{{.}}">{{.}}</option>
+                    {{end}}
+                </select>
+
+                <select id="status-filter" class="input-primary px-4 py-2 rounded-lg border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex space-x-3">
+                <button id="add-user-btn" class="btn-primary px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    <span>Add User</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="table-section flex-1 overflow-hidden">
+        <div class="h-full overflow-auto">
+            <table id="users-table" class="w-full">
+                <thead class="bg-gray-800 sticky top-0 z-10">
+                    <tr class="border-b border-gray-700">
+                        <th class="table-header px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer hover:text-white transition-colors duration-200" data-sort="name">
+                            <div class="flex items-center space-x-2">
+                                <span>Employee Name</span>
+                                <svg class="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                </svg>
+                            </div>
+                        </th>
+                        <th class="table-header px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer hover:text-white transition-colors duration-200" data-sort="group">
+                            <div class="flex items-center space-x-2">
+                                <span>Group</span>
+                                <svg class="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                </svg>
+                            </div>
+                        </th>
+                        <th class="table-header px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            Email
+                        </th>
+                        <th class="table-header px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer hover:text-white transition-colors duration-200" data-sort="status">
+                            <div class="flex items-center space-x-2">
+                                <span>Status</span>
+                                <svg class="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                </svg>
+                            </div>
+                        </th>
+                        <th class="table-header px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer hover:text-white transition-colors duration-200" data-sort="created">
+                            <div class="flex items-center space-x-2">
+                                <span>Created Date</span>
+                                <svg class="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                </svg>
+                            </div>
+                        </th>
+                        <th class="table-header px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="users-tbody" class="bg-gray-900 divide-y divide-gray-700">
+                    {{range .Users}}
+                    <tr class="user-row hover:bg-gray-800 transition-colors duration-200 {{if not .IsActive}}opacity-60{{end}}" data-user-id="{{.ID}}">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <div class="h-10 w-10 rounded-full bg-gray-600 flex items-center justify-center">
+                                        <span class="text-sm font-medium text-white">
+                                            {{if .Name}}{{index .Name 0}}{{end}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-white">{{.Name}}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                {{.Group}}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-300">
+                                {{if .Email}}{{.Email}}{{else}}-{{end}}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium {{if .IsActive}}bg-green-100 text-green-800{{else}}bg-red-100 text-red-800{{end}}">
+                                {{if .IsActive}}Active{{else}}Inactive{{end}}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                            {{formatDate .CreatedAt}}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <div class="flex space-x-2">
+                                <button class="edit-user-btn text-blue-400 hover:text-blue-300 transition-colors duration-200" data-user-id="{{.ID}}">
+                                    Edit
+                                </button>
+                                <button class="delete-user-btn text-red-400 hover:text-red-300 transition-colors duration-200" data-user-id="{{.ID}}">
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {{else}}
+                    <tr>
+                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">No users found</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Group Summary Section -->
+    <div class="group-section bg-gray-800 border-t border-gray-700 p-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Groups Summary</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {{range $group, $count := index .Stats "groups"}}
+            <div class="bg-gray-750 rounded-lg p-4 border border-gray-600">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-400">{{$group}}</p>
+                        <p class="text-xl font-semibold text-white">{{$count}} users</p>
+                    </div>
+                    <div class="w-8 h-8 bg-purple-500 bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            {{else}}
+            <div class="col-span-full text-center text-gray-500">
+                No groups found
+            </div>
+            {{end}}
+        </div>
+    </div>
+</div>
+
+<!-- Hidden data for JavaScript -->
+<script type="application/json" id="page-data">
+{
+    "users": {{json .Users}},
+    "groups": {{json .Groups}},
+    "stats": {{json .Stats}}
+}
+</script>
+
+<script>
+    // Initialize users page
+    document.addEventListener('DOMContentLoaded', function() {
+        const pageData = JSON.parse(document.getElementById('page-data').textContent);
+        UsersPage.init(pageData);
+    });
+</script>
+{{end}}
