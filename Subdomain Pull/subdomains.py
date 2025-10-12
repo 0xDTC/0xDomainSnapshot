@@ -22,8 +22,9 @@ from dotenv import dotenv_values
 from requests.exceptions import RequestException
 
 # ───────────── paths / CLI
-ENV_FILE   = pathlib.Path(r"/media/sf_main/Scripts/0xGodaddy/Subdomain Pull/.env")
 SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
+PARENT_DIR = SCRIPT_DIR.parent
+ENV_FILE   = PARENT_DIR / "secret.txt"  # Use secret.txt in parent directory
 DATA_DIR   = SCRIPT_DIR / "data"; DATA_DIR.mkdir(exist_ok=True)
 MASTER_JSON = DATA_DIR / "dns_records_master.json"
 HTML_OUT    = SCRIPT_DIR / "DNS_Inventory.html"

@@ -1,17 +1,56 @@
-*.txt
-*.log
-*.md
-*.html
-*.json
-*.csv
-*.pdf
-*.sh
-*.bash
-*.zip
+# Credentials and secrets
+secret.txt
+.env
 *.key
 *.pem
 *.p12
 *.pfx
 *.keychain
-.gitignore
-.env
+
+# Generated output files
+*_history.json
+*_last_check*.json
+domains.json
+godaddy_assets.json
+cloudflare_assets.json
+org_assets.json
+dns_records_master.json
+cloudflare_zones_cache.json
+
+# Generated reports
+GDdomain.md
+GDdomain.html
+Org-Assets.md
+Org-Assets.html
+DNS_Inventory.html
+
+# Logs
+*.log
+
+# Export files
+*.csv
+*.pdf
+*.zip
+
+# Data directories
+Domain\ Pull/domains_history.json
+Subdomain\ Pull/data/
+Serve/*_last_check*.json
+Serve/*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# OS files
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
