@@ -1,0 +1,32 @@
+[
+  {
+    "repository_name": "api-service",
+    "repository_uri": "123456789012.dkr.ecr.us-east-1.amazonaws.com/api-service",
+    "image_count": 45,
+    "scan_on_push": true,
+    "encryption_type": "AES256",
+    "created_at": "2023-05-15",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "repository_name": "web-frontend",
+    "repository_uri": "123456789012.dkr.ecr.us-east-1.amazonaws.com/web-frontend",
+    "image_count": 32,
+    "scan_on_push": true,
+    "encryption_type": "AES256",
+    "created_at": "2023-06-20",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "repository_name": "legacy-app",
+    "repository_uri": "123456789012.dkr.ecr.us-west-2.amazonaws.com/legacy-app",
+    "image_count": 0,
+    "scan_on_push": false,
+    "encryption_type": "AES256",
+    "created_at": "2022-01-10",
+    "region": "us-west-2",
+    "status": "removed"
+  }
+]

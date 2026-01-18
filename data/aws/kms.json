@@ -1,0 +1,35 @@
+[
+  {
+    "key_id": "12345678-1234-1234-1234-123456789012",
+    "key_arn": "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012",
+    "alias": "alias/prod-encryption-key",
+    "description": "Production data encryption key",
+    "key_usage": "ENCRYPT_DECRYPT",
+    "key_state": "Enabled",
+    "rotation_enabled": true,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "key_id": "87654321-4321-4321-4321-210987654321",
+    "key_arn": "arn:aws:kms:us-east-1:123456789012:key/87654321-4321-4321-4321-210987654321",
+    "alias": "alias/s3-bucket-key",
+    "description": "S3 bucket encryption key",
+    "key_usage": "ENCRYPT_DECRYPT",
+    "key_state": "Enabled",
+    "rotation_enabled": true,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "key_id": "abcdef12-abcd-abcd-abcd-abcdef123456",
+    "key_arn": "arn:aws:kms:us-west-2:123456789012:key/abcdef12-abcd-abcd-abcd-abcdef123456",
+    "alias": "alias/old-test-key",
+    "description": "Deprecated test key",
+    "key_usage": "ENCRYPT_DECRYPT",
+    "key_state": "PendingDeletion",
+    "rotation_enabled": false,
+    "region": "us-west-2",
+    "status": "removed"
+  }
+]

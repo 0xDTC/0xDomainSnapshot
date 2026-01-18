@@ -1,0 +1,32 @@
+[
+  {
+    "cluster_name": "prod-services",
+    "cluster_arn": "arn:aws:ecs:us-east-1:123456789012:cluster/prod-services",
+    "running_tasks": 15,
+    "pending_tasks": 0,
+    "active_services": 8,
+    "registered_instances": 4,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "cluster_name": "batch-processing",
+    "cluster_arn": "arn:aws:ecs:us-east-1:123456789012:cluster/batch-processing",
+    "running_tasks": 3,
+    "pending_tasks": 2,
+    "active_services": 2,
+    "registered_instances": 2,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "cluster_name": "legacy-apps",
+    "cluster_arn": "arn:aws:ecs:us-west-2:123456789012:cluster/legacy-apps",
+    "running_tasks": 0,
+    "pending_tasks": 0,
+    "active_services": 0,
+    "registered_instances": 0,
+    "region": "us-west-2",
+    "status": "removed"
+  }
+]

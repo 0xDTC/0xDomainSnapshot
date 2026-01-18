@@ -1,0 +1,32 @@
+[
+  {
+    "queue_name": "order-processing",
+    "queue_url": "https://sqs.us-east-1.amazonaws.com/123456789012/order-processing",
+    "queue_arn": "arn:aws:sqs:us-east-1:123456789012:order-processing",
+    "type": "Standard",
+    "messages_available": 42,
+    "messages_in_flight": 5,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "queue_name": "notifications.fifo",
+    "queue_url": "https://sqs.us-east-1.amazonaws.com/123456789012/notifications.fifo",
+    "queue_arn": "arn:aws:sqs:us-east-1:123456789012:notifications.fifo",
+    "type": "FIFO",
+    "messages_available": 0,
+    "messages_in_flight": 0,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "queue_name": "legacy-events",
+    "queue_url": "https://sqs.us-west-2.amazonaws.com/123456789012/legacy-events",
+    "queue_arn": "arn:aws:sqs:us-west-2:123456789012:legacy-events",
+    "type": "Standard",
+    "messages_available": 0,
+    "messages_in_flight": 0,
+    "region": "us-west-2",
+    "status": "removed"
+  }
+]

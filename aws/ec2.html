@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC2 Instances - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+
+    <main>
+        <div class="page-header provider-aws">
+            <h1>AWS EC2 Instances</h1>
+            <p>All EC2 instances across AWS accounts and regions</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card total">
+                <div class="stat-value" id="stat-total">-</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-card active">
+                <div class="stat-value" id="stat-active">-</div>
+                <div class="stat-label">Active</div>
+            </div>
+            <div class="stat-card removed">
+                <div class="stat-value" id="stat-removed">-</div>
+                <div class="stat-label">Removed</div>
+            </div>
+        </div>
+
+        <div class="table-controls">
+            <div class="search-box">
+                <input type="text" id="globalSearch" placeholder="Search all columns... (Ctrl+F)">
+            </div>
+            <button class="btn btn-secondary" onclick="dt.exportCSV('ec2-instances.csv')">Export CSV</button>
+        </div>
+
+        <div id="table-container"></div>
+    </main>
+
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const dt = new DataTable('table-container', {
+            dataUrl: '../data/aws/ec2.json',
+            filter: (row) => row.status !== 'removed',
+            columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Instance ID', data: 'instance_id', render: (val) => `<code>${val}</code>` },
+                { title: 'Name', data: 'name' },
+                { title: 'Type', data: 'instance_type' },
+                { title: 'State', data: 'state', render: (val) => {
+                    const type = val === 'running' ? 'running' : val === 'stopped' ? 'stopped' : 'terminated';
+                    return renderBadge(val, type);
+                }},
+                { title: 'Private IP', data: 'private_ip' },
+                { title: 'Public IP', data: 'public_ip', render: (val) => val || '-' },
+                { title: 'Region', data: 'region' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) },
+                { title: 'Discovery Date', data: 'discovery_date' }
+            ],
+            rowClass: (row) => row.status === 'removed' ? 'removed' : '',
+            onDataLoaded: (data) => {
+                const stats = dt.getStats();
+                updateStats(stats);
+            }
+        });
+    </script>
+</body>
+</html>

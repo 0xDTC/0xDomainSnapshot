@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lambda Functions - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+
+    <main>
+        <div class="page-header provider-aws">
+            <h1>AWS Lambda Functions</h1>
+            <p>All Lambda functions across AWS accounts and regions</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card total">
+                <div class="stat-value" id="stat-total">-</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-card active">
+                <div class="stat-value" id="stat-active">-</div>
+                <div class="stat-label">Active</div>
+            </div>
+            <div class="stat-card removed">
+                <div class="stat-value" id="stat-removed">-</div>
+                <div class="stat-label">Removed</div>
+            </div>
+        </div>
+
+        <div class="table-controls">
+            <div class="search-box">
+                <input type="text" id="globalSearch" placeholder="Search all columns... (Ctrl+F)">
+            </div>
+            <button class="btn btn-secondary" onclick="dt.exportCSV('lambda-functions.csv')">Export CSV</button>
+        </div>
+
+        <div id="table-container"></div>
+    </main>
+
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const dt = new DataTable('table-container', {
+            dataUrl: '../data/aws/lambda.json',
+            filter: (row) => row.status !== 'removed',
+            columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Function Name', data: 'function_name' },
+                { title: 'Runtime', data: 'runtime' },
+                { title: 'Handler', data: 'handler', render: (val) => `<code>${val}</code>` },
+                { title: 'Memory (MB)', data: 'memory_mb' },
+                { title: 'Timeout (s)', data: 'timeout_sec' },
+                { title: 'Code Size (MB)', data: 'code_size_mb' },
+                { title: 'Region', data: 'region' },
+                { title: 'VPC', data: 'vpc_config', render: (val) => val ? 'Yes' : 'No' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) },
+                { title: 'Last Modified', data: 'last_modified' }
+            ],
+            rowClass: (row) => row.status === 'removed' ? 'removed' : '',
+            onDataLoaded: (data) => {
+                const stats = dt.getStats();
+                updateStats(stats);
+            }
+        });
+    </script>
+</body>
+</html>

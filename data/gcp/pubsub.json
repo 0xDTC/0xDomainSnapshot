@@ -1,0 +1,38 @@
+[
+  {
+    "name": "order-events",
+    "project": "my-gcp-project",
+    "type": "topic",
+    "subscriptions_count": 3,
+    "message_retention": "7d",
+    "schema": null,
+    "status": "active"
+  },
+  {
+    "name": "user-notifications",
+    "project": "my-gcp-project",
+    "type": "topic",
+    "subscriptions_count": 2,
+    "message_retention": "1d",
+    "schema": "user-notification-schema",
+    "status": "active"
+  },
+  {
+    "name": "analytics-stream",
+    "project": "my-gcp-project",
+    "type": "topic",
+    "subscriptions_count": 1,
+    "message_retention": "3d",
+    "schema": null,
+    "status": "active"
+  },
+  {
+    "name": "legacy-events",
+    "project": "my-gcp-project",
+    "type": "topic",
+    "subscriptions_count": 0,
+    "message_retention": "7d",
+    "schema": null,
+    "status": "removed"
+  }
+]

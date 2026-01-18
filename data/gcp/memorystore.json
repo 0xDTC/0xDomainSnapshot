@@ -1,0 +1,26 @@
+[
+  {
+    "name": "prod-redis",
+    "project": "my-gcp-project",
+    "region": "us-central1",
+    "tier": "STANDARD_HA",
+    "memory_size_gb": 5,
+    "redis_version": "REDIS_7_0",
+    "host": "10.0.0.5",
+    "port": 6379,
+    "state": "READY",
+    "status": "active"
+  },
+  {
+    "name": "cache-instance",
+    "project": "my-gcp-project",
+    "region": "us-east1",
+    "tier": "BASIC",
+    "memory_size_gb": 1,
+    "redis_version": "REDIS_6_X",
+    "host": "10.1.0.10",
+    "port": 6379,
+    "state": "READY",
+    "status": "active"
+  }
+]

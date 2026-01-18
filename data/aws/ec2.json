@@ -1,0 +1,62 @@
+[
+    {
+        "instance_id": "i-0abc123def456789a",
+        "name": "web-server-prod-01",
+        "instance_type": "t3.medium",
+        "state": "running",
+        "private_ip": "10.0.1.50",
+        "public_ip": "54.123.45.67",
+        "vpc_id": "vpc-12345678",
+        "region": "us-east-1",
+        "az": "us-east-1a",
+        "tags": {"Environment": "production", "Team": "platform"},
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "instance_id": "i-0def456789abc123b",
+        "name": "api-server-prod-01",
+        "instance_type": "t3.large",
+        "state": "running",
+        "private_ip": "10.0.1.51",
+        "public_ip": "54.123.45.68",
+        "vpc_id": "vpc-12345678",
+        "region": "us-east-1",
+        "az": "us-east-1b",
+        "tags": {"Environment": "production", "Team": "backend"},
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "instance_id": "i-0ghi789abc123def4",
+        "name": "db-server-staging",
+        "instance_type": "t3.small",
+        "state": "stopped",
+        "private_ip": "10.0.2.10",
+        "public_ip": null,
+        "vpc_id": "vpc-87654321",
+        "region": "us-west-2",
+        "az": "us-west-2a",
+        "tags": {"Environment": "staging", "Team": "database"},
+        "status": "active",
+        "discovery_date": "2025-01-08",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "instance_id": "i-0old123456789xyz",
+        "name": "legacy-app-server",
+        "instance_type": "t2.micro",
+        "state": "terminated",
+        "private_ip": "10.0.3.5",
+        "public_ip": null,
+        "vpc_id": "vpc-12345678",
+        "region": "us-east-1",
+        "az": "us-east-1a",
+        "tags": {"Environment": "deprecated"},
+        "status": "removed",
+        "discovery_date": "2024-06-01",
+        "last_seen": "2024-12-20"
+    }
+]

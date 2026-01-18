@@ -1,0 +1,24 @@
+[
+  {
+    "instance_id": "prod-spanner",
+    "project": "my-gcp-project",
+    "display_name": "Production Spanner",
+    "config": "regional-us-central1",
+    "node_count": 3,
+    "processing_units": 3000,
+    "databases_count": 2,
+    "state": "READY",
+    "status": "active"
+  },
+  {
+    "instance_id": "global-ledger",
+    "project": "my-gcp-project",
+    "display_name": "Global Ledger Database",
+    "config": "nam3",
+    "node_count": 5,
+    "processing_units": 5000,
+    "databases_count": 1,
+    "state": "READY",
+    "status": "active"
+  }
+]

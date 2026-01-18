@@ -1,0 +1,50 @@
+[
+    {
+        "asset_type": "domain",
+        "name": "oldsite.net",
+        "provider": "GoDaddy",
+        "details": "Domain expired",
+        "discovery_date": "2024-01-15",
+        "removed_date": "2024-12-01"
+    },
+    {
+        "asset_type": "subdomain",
+        "name": "old-api.example.com",
+        "provider": "GoDaddy",
+        "details": "A record - 192.168.1.50",
+        "discovery_date": "2024-06-01",
+        "removed_date": "2024-12-15"
+    },
+    {
+        "asset_type": "ec2",
+        "name": "i-old123456789",
+        "provider": "AWS",
+        "details": "t2.micro - us-east-1",
+        "discovery_date": "2024-03-01",
+        "removed_date": "2024-11-20"
+    },
+    {
+        "asset_type": "s3",
+        "name": "old-backup-bucket",
+        "provider": "AWS",
+        "details": "S3 Bucket",
+        "discovery_date": "2024-01-01",
+        "removed_date": "2024-10-15"
+    },
+    {
+        "asset_type": "vm",
+        "name": "legacy-server-01",
+        "provider": "Azure",
+        "details": "Standard_B1s - eastus",
+        "discovery_date": "2024-02-15",
+        "removed_date": "2024-09-30"
+    },
+    {
+        "asset_type": "compute",
+        "name": "test-instance-001",
+        "provider": "GCP",
+        "details": "e2-micro - us-central1-a",
+        "discovery_date": "2024-05-01",
+        "removed_date": "2024-08-20"
+    }
+]

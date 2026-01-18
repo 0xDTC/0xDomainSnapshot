@@ -1,0 +1,24 @@
+[
+  {
+    "domain_name": "prod-logs",
+    "domain_id": "123456789012/prod-logs",
+    "arn": "arn:aws:es:us-east-1:123456789012:domain/prod-logs",
+    "engine_version": "OpenSearch_2.11",
+    "instance_type": "r6g.large.search",
+    "instance_count": 3,
+    "endpoint": "search-prod-logs-abc123def456.us-east-1.es.amazonaws.com",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "domain_name": "app-search",
+    "domain_id": "123456789012/app-search",
+    "arn": "arn:aws:es:us-east-1:123456789012:domain/app-search",
+    "engine_version": "OpenSearch_2.9",
+    "instance_type": "m6g.medium.search",
+    "instance_count": 2,
+    "endpoint": "search-app-search-ghi789jkl012.us-east-1.es.amazonaws.com",
+    "region": "us-east-1",
+    "status": "active"
+  }
+]

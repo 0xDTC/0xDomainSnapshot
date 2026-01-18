@@ -1,0 +1,28 @@
+[
+  {
+    "name": "prod-oke-cluster",
+    "id": "ocid1.cluster.oc1.iad.abc123",
+    "compartment_id": "ocid1.compartment.oc1..aaa111bbb222",
+    "kubernetes_version": "v1.28.2",
+    "vcn_id": "ocid1.vcn.oc1.iad.vcn123",
+    "endpoint": "https://abc123.oraclecloud.com:6443",
+    "node_pools_count": 2,
+    "total_nodes": 6,
+    "lifecycle_state": "ACTIVE",
+    "region": "us-ashburn-1",
+    "status": "active"
+  },
+  {
+    "name": "staging-oke-cluster",
+    "id": "ocid1.cluster.oc1.iad.def456",
+    "compartment_id": "ocid1.compartment.oc1..aaa111bbb222",
+    "kubernetes_version": "v1.27.8",
+    "vcn_id": "ocid1.vcn.oc1.iad.vcn456",
+    "endpoint": "https://def456.oraclecloud.com:6443",
+    "node_pools_count": 1,
+    "total_nodes": 3,
+    "lifecycle_state": "ACTIVE",
+    "region": "us-ashburn-1",
+    "status": "active"
+  }
+]

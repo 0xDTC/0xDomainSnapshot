@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Removed Assets - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+    <main>
+        <div class="page-header provider-aws"><h1>AWS Removed Assets</h1><p>Historical record of all removed AWS resources</p></div>
+        <div class="stats-bar">
+            <div class="stat-card removed"><div class="stat-value" id="stat-total">-</div><div class="stat-label">Total Removed</div></div>
+        </div>
+        <div class="table-controls">
+            <div class="filter-controls">
+                <select id="serviceSelector" class="filter-select">
+                    <option value="all">All Services</option>
+                    <option value="ec2">EC2 Instances</option>
+                    <option value="eks">EKS Clusters</option>
+                    <option value="ecs">ECS Clusters</option>
+                    <option value="lambda">Lambda Functions</option>
+                    <option value="apprunner">App Runner</option>
+                    <option value="elasticbeanstalk">Elastic Beanstalk</option>
+                    <option value="lightsail">Lightsail</option>
+                    <option value="rds">RDS Databases</option>
+                    <option value="dynamodb">DynamoDB</option>
+                    <option value="elasticache">ElastiCache</option>
+                    <option value="memorydb">MemoryDB</option>
+                    <option value="documentdb">DocumentDB</option>
+                    <option value="neptune">Neptune</option>
+                    <option value="redshift">Redshift</option>
+                    <option value="opensearch">OpenSearch</option>
+                    <option value="s3">S3 Buckets</option>
+                    <option value="efs">EFS</option>
+                    <option value="fsx">FSx</option>
+                    <option value="ecr">ECR</option>
+                    <option value="iam">IAM Users</option>
+                    <option value="cognito">Cognito</option>
+                    <option value="secrets">Secrets Manager</option>
+                    <option value="kms">KMS Keys</option>
+                    <option value="vpc">VPCs</option>
+                    <option value="elb">Load Balancers</option>
+                    <option value="cloudfront">CloudFront</option>
+                    <option value="apigateway">API Gateway</option>
+                    <option value="appsync">AppSync</option>
+                    <option value="sqs">SQS Queues</option>
+                    <option value="sns">SNS Topics</option>
+                    <option value="eventbridge">EventBridge</option>
+                    <option value="kinesis">Kinesis</option>
+                    <option value="msk">MSK</option>
+                    <option value="mq">Amazon MQ</option>
+                    <option value="stepfunctions">Step Functions</option>
+                    <option value="glue">Glue</option>
+                    <option value="athena">Athena</option>
+                    <option value="emr">EMR</option>
+                    <option value="sagemaker">SageMaker</option>
+                    <option value="batch">Batch</option>
+                    <option value="codepipeline">CodePipeline</option>
+                    <option value="codebuild">CodeBuild</option>
+                    <option value="codecommit">CodeCommit</option>
+                    <option value="codedeploy">CodeDeploy</option>
+                    <option value="codeartifact">CodeArtifact</option>
+                    <option value="amplify">Amplify</option>
+                    <option value="backup">Backup</option>
+                    <option value="transfer">Transfer Family</option>
+                    <option value="cloudwatch">CloudWatch</option>
+                    <option value="waf">WAF</option>
+                    <option value="acm">ACM Certificates</option>
+                </select>
+                <div class="date-range-filter">
+                    <label>From:</label>
+                    <input type="date" id="dateFrom">
+                    <label>To:</label>
+                    <input type="date" id="dateTo">
+                    <button class="btn btn-secondary" id="clearDatesBtn">Clear</button>
+                </div>
+            </div>
+            <div class="search-box"><input type="text" id="globalSearch" placeholder="Search..."></div>
+            <button class="btn btn-secondary" id="exportBtn">Export CSV</button>
+        </div>
+        <div id="table-container"></div>
+    </main>
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const serviceConfigs = {
+            ec2: {
+                file: 'ec2.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Instance ID', data: 'instance_id' },
+                    { title: 'Name', data: 'name' },
+                    { title: 'Type', data: 'instance_type' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            s3: {
+                file: 's3.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Bucket Name', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Created', data: 'creation_date' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            rds: {
+                file: 'rds.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'DB Identifier', data: 'db_identifier' },
+                    { title: 'Engine', data: 'engine' },
+                    { title: 'Instance Class', data: 'instance_class' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            lambda: {
+                file: 'lambda.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Function Name', data: 'function_name' },
+                    { title: 'Runtime', data: 'runtime' },
+                    { title: 'Memory', data: 'memory' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            iam: {
+                file: 'iam.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Username', data: 'username' },
+                    { title: 'ARN', data: 'arn' },
+                    { title: 'Groups', data: 'groups' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            elb: {
+                file: 'elb.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Name', data: 'name' },
+                    { title: 'Type', data: 'type' },
+                    { title: 'Scheme', data: 'scheme' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            dynamodb: {
+                file: 'dynamodb.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Table Name', data: 'table_name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            elasticache: {
+                file: 'elasticache.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Cluster ID', data: 'cluster_id' },
+                    { title: 'Engine', data: 'engine' },
+                    { title: 'Node Type', data: 'node_type' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            eks: {
+                file: 'eks.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Cluster Name', data: 'name' },
+                    { title: 'Version', data: 'version' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            ecs: {
+                file: 'ecs.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Cluster Name', data: 'cluster_name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            sqs: {
+                file: 'sqs.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Queue Name', data: 'queue_name' },
+                    { title: 'Type', data: 'type' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            sns: {
+                file: 'sns.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Topic Name', data: 'topic_name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            cloudfront: {
+                file: 'cloudfront.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Distribution ID', data: 'distribution_id' },
+                    { title: 'Domain', data: 'domain_name' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            apigateway: {
+                file: 'apigateway.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'API Name', data: 'name' },
+                    { title: 'Type', data: 'api_type' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            apprunner: {
+                file: 'apprunner.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Service Name', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            elasticbeanstalk: {
+                file: 'elasticbeanstalk.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Environment', data: 'name' },
+                    { title: 'Platform', data: 'platform' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            lightsail: {
+                file: 'lightsail.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Name', data: 'name' },
+                    { title: 'Blueprint', data: 'blueprint_id' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            memorydb: {
+                file: 'memorydb.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Cluster Name', data: 'name' },
+                    { title: 'Node Type', data: 'node_type' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            documentdb: {
+                file: 'documentdb.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Cluster ID', data: 'cluster_id' },
+                    { title: 'Engine', data: 'engine' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            neptune: {
+                file: 'neptune.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Cluster ID', data: 'cluster_id' },
+                    { title: 'Engine', data: 'engine' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            redshift: {
+                file: 'redshift.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Cluster ID', data: 'cluster_id' },
+                    { title: 'Node Type', data: 'node_type' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            opensearch: {
+                file: 'opensearch.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Domain Name', data: 'domain_name' },
+                    { title: 'Engine Version', data: 'engine_version' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            efs: {
+                file: 'efs.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'File System ID', data: 'file_system_id' },
+                    { title: 'Name', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            fsx: {
+                file: 'fsx.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'File System ID', data: 'file_system_id' },
+                    { title: 'Type', data: 'file_system_type' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            ecr: {
+                file: 'ecr.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Repository Name', data: 'repository_name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            cognito: {
+                file: 'cognito.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Pool Name', data: 'name' },
+                    { title: 'Pool ID', data: 'pool_id' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            secrets: {
+                file: 'secrets.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Secret Name', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            kms: {
+                file: 'kms.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Key ID', data: 'key_id' },
+                    { title: 'Alias', data: 'alias' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            vpc: {
+                file: 'vpc.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'VPC ID', data: 'vpc_id' },
+                    { title: 'Name', data: 'name' },
+                    { title: 'CIDR', data: 'cidr_block' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            appsync: {
+                file: 'appsync.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'API Name', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            eventbridge: {
+                file: 'eventbridge.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Rule Name', data: 'name' },
+                    { title: 'Event Bus', data: 'event_bus_name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            kinesis: {
+                file: 'kinesis.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Stream Name', data: 'stream_name' },
+                    { title: 'Shards', data: 'shard_count' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            msk: {
+                file: 'msk.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Cluster Name', data: 'cluster_name' },
+                    { title: 'Kafka Version', data: 'kafka_version' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            mq: {
+                file: 'mq.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Broker Name', data: 'broker_name' },
+                    { title: 'Engine', data: 'engine_type' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            stepfunctions: {
+                file: 'stepfunctions.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'State Machine', data: 'name' },
+                    { title: 'Type', data: 'type' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            glue: {
+                file: 'glue.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Job Name', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            athena: {
+                file: 'athena.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Workgroup', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            emr: {
+                file: 'emr.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Cluster ID', data: 'cluster_id' },
+                    { title: 'Name', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            sagemaker: {
+                file: 'sagemaker.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Notebook Name', data: 'name' },
+                    { title: 'Instance Type', data: 'instance_type' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            batch: {
+                file: 'batch.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Job Queue', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            codepipeline: {
+                file: 'codepipeline.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Pipeline Name', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            codebuild: {
+                file: 'codebuild.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Project Name', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            codecommit: {
+                file: 'codecommit.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Repository', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            codedeploy: {
+                file: 'codedeploy.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Application', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            codeartifact: {
+                file: 'codeartifact.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Repository', data: 'name' },
+                    { title: 'Domain', data: 'domain' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            amplify: {
+                file: 'amplify.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'App Name', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            backup: {
+                file: 'backup.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Backup Vault', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            transfer: {
+                file: 'transfer.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Server ID', data: 'server_id' },
+                    { title: 'Protocol', data: 'protocols' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            cloudwatch: {
+                file: 'cloudwatch.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Alarm Name', data: 'name' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            waf: {
+                file: 'waf.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Web ACL', data: 'name' },
+                    { title: 'Scope', data: 'scope' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            },
+            acm: {
+                file: 'acm.json',
+                columns: [
+                    { title: 'Account', data: 'account' },
+                    { title: 'Domain', data: 'domain_name' },
+                    { title: 'Type', data: 'type' },
+                    { title: 'Region', data: 'region' },
+                    { title: 'Removed Date', data: 'removed_date' },
+                    { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+                ]
+            }
+        };
+
+        const allServicesColumns = [
+            { title: 'Account', data: 'account' },
+            { title: 'Service', data: 'service_type', render: (val) => `<span class="badge badge-info">${val}</span>` },
+            { title: 'Name', data: 'name' },
+            { title: 'Region', data: 'region' },
+            { title: 'Removed Date', data: 'removed_date' },
+            { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+        ];
+
+        let currentDt = null;
+
+        function filterByDateRange(data) {
+            const dateFrom = document.getElementById('dateFrom').value;
+            const dateTo = document.getElementById('dateTo').value;
+            if (!dateFrom && !dateTo) return data;
+            return data.filter(item => {
+                if (!item.removed_date || item.removed_date === 'N/A') return true;
+                const itemDate = new Date(item.removed_date);
+                if (isNaN(itemDate.getTime())) return true;
+                if (dateFrom && new Date(dateFrom) > itemDate) return false;
+                if (dateTo && new Date(dateTo) < itemDate) return false;
+                return true;
+            });
+        }
+
+        async function loadServiceData(serviceKey) {
+            if (currentDt) { currentDt.destroy(); currentDt = null; }
+            const searchInput = document.getElementById('globalSearch');
+            if (searchInput) searchInput.value = '';
+
+            const container = document.getElementById('table-container');
+            container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><span>Loading data...</span></div>';
+
+            if (serviceKey === 'all') {
+                let allData = [];
+                for (const [key, config] of Object.entries(serviceConfigs)) {
+                    try {
+                        const response = await fetch('../data/aws/' + config.file);
+                        if (response.ok) {
+                            const data = await response.json();
+                            const removed = data.filter(item => item.status === 'removed');
+                            removed.forEach(item => {
+                                allData.push({
+                                    account: item.account || 'N/A',
+                                    service_type: key.toUpperCase(),
+                                    name: item.name || item.instance_id || item.db_identifier || item.function_name || item.username || item.cluster_id || item.queue_name || item.topic_name || item.distribution_id || 'N/A',
+                                    region: item.region || 'N/A',
+                                    removed_date: item.removed_date || 'N/A',
+                                    status: item.status
+                                });
+                            });
+                        }
+                    } catch (e) {}
+                }
+
+                allData = filterByDateRange(allData);
+                document.getElementById('stat-total').textContent = allData.length;
+                container.innerHTML = '';
+                currentDt = new DataTable('table-container', { data: allData, columns: allServicesColumns, rowClass: () => 'removed' });
+            } else {
+                const config = serviceConfigs[serviceKey];
+                try {
+                    const response = await fetch('../data/aws/' + config.file);
+                    if (response.ok) {
+                        const data = await response.json();
+                        let removed = data.filter(item => item.status === 'removed');
+                        removed = filterByDateRange(removed);
+
+                        document.getElementById('stat-total').textContent = removed.length;
+                        container.innerHTML = '';
+                        currentDt = new DataTable('table-container', { data: removed, columns: config.columns, rowClass: () => 'removed' });
+                    } else {
+                        container.innerHTML = '<div class="empty-state"><div class="empty-state-title">No data available</div></div>';
+                        document.getElementById('stat-total').textContent = '0';
+                    }
+                } catch (e) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-state-title">Failed to load data</div></div>';
+                    document.getElementById('stat-total').textContent = '0';
+                }
+            }
+        }
+
+        document.getElementById('serviceSelector').addEventListener('change', (e) => {
+            const service = e.target.value;
+            const url = new URL(window.location);
+            ['page', 'sortCol', 'sortDir', 'search', 'rows'].forEach(p => url.searchParams.delete(p));
+            url.searchParams.forEach((value, key) => {
+                if (key.startsWith('filter_')) url.searchParams.delete(key);
+            });
+            if (service === 'all') {
+                url.searchParams.delete('service');
+            } else {
+                url.searchParams.set('service', service);
+            }
+            window.history.replaceState({}, '', url);
+            loadServiceData(service);
+        });
+
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            if (currentDt) {
+                const service = document.getElementById('serviceSelector').value;
+                currentDt.exportCSV(`aws-${service}-removed.csv`);
+            }
+        });
+
+        document.getElementById('dateFrom').addEventListener('change', () => loadServiceData(document.getElementById('serviceSelector').value));
+        document.getElementById('dateTo').addEventListener('change', () => loadServiceData(document.getElementById('serviceSelector').value));
+        document.getElementById('clearDatesBtn').addEventListener('click', () => {
+            document.getElementById('dateFrom').value = '';
+            document.getElementById('dateTo').value = '';
+            loadServiceData(document.getElementById('serviceSelector').value);
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialService = urlParams.get('service') || 'all';
+        document.getElementById('serviceSelector').value = initialService;
+        loadServiceData(initialService);
+    </script>
+</body>
+</html>

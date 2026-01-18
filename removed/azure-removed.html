@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Removed Assets - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+    <main>
+        <div class="page-header provider-azure"><h1>Azure Removed Assets</h1><p>Historical record of all removed Azure resources</p></div>
+        <div class="stats-bar">
+            <div class="stat-card removed"><div class="stat-value" id="stat-total">-</div><div class="stat-label">Total Removed</div></div>
+        </div>
+        <div class="table-controls">
+            <div class="filter-controls">
+                <select id="serviceSelector" class="filter-select">
+                    <option value="all">All Services</option>
+                    <option value="vms">Virtual Machines</option>
+                    <option value="aks">AKS Clusters</option>
+                    <option value="appservice">App Service</option>
+                    <option value="functions">Functions</option>
+                    <option value="sql">SQL Databases</option>
+                    <option value="cosmosdb">Cosmos DB</option>
+                    <option value="redis">Redis Cache</option>
+                    <option value="storage">Storage Accounts</option>
+                    <option value="containerregistry">Container Registry</option>
+                    <option value="ad_users">AD Users</option>
+                    <option value="keyvault">Key Vault</option>
+                    <option value="cdn">CDN Profiles</option>
+                    <option value="frontdoor">Front Door</option>
+                    <option value="loadbalancer">Load Balancer</option>
+                    <option value="vnet">Virtual Networks</option>
+                    <option value="apim">API Management</option>
+                    <option value="servicebus">Service Bus</option>
+                    <option value="eventhub">Event Hubs</option>
+                    <option value="logicapps">Logic Apps</option>
+                    <option value="datafactory">Data Factory</option>
+                    <option value="synapse">Synapse</option>
+                    <option value="databricks">Databricks</option>
+                    <option value="mlworkspace">ML Workspace</option>
+                    <option value="cognitiveservices">Cognitive Services</option>
+                    <option value="devops">DevOps</option>
+                </select>
+                <div class="date-range-filter">
+                    <label>From:</label>
+                    <input type="date" id="dateFrom">
+                    <label>To:</label>
+                    <input type="date" id="dateTo">
+                    <button class="btn btn-secondary" id="clearDatesBtn">Clear</button>
+                </div>
+            </div>
+            <div class="search-box"><input type="text" id="globalSearch" placeholder="Search..."></div>
+            <button class="btn btn-secondary" id="exportBtn">Export CSV</button>
+        </div>
+        <div id="table-container"></div>
+    </main>
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const serviceConfigs = {
+            vms: { file: 'vms.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Size', data: 'size' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            aks: { file: 'aks.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Cluster Name', data: 'name' },
+                { title: 'Version', data: 'kubernetes_version' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            appservice: { file: 'appservice.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Kind', data: 'kind' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            functions: { file: 'functions.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Runtime', data: 'runtime' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            sql: { file: 'sql.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Server', data: 'server_name' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            cosmosdb: { file: 'cosmosdb.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Account Name', data: 'name' },
+                { title: 'API', data: 'api_type' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            redis: { file: 'redis.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'SKU', data: 'sku' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            storage: { file: 'storage.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Kind', data: 'kind' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            containerregistry: { file: 'containerregistry.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'SKU', data: 'sku' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            ad_users: { file: 'ad_users.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Display Name', data: 'display_name' },
+                { title: 'Email', data: 'email' },
+                { title: 'Department', data: 'department' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            keyvault: { file: 'keyvault.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            cdn: { file: 'cdn.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Profile Name', data: 'name' },
+                { title: 'SKU', data: 'sku' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            frontdoor: { file: 'frontdoor.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Frontend Hosts', data: 'frontend_hosts' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            loadbalancer: { file: 'loadbalancer.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'SKU', data: 'sku' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            vnet: { file: 'vnet.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Address Space', data: 'address_space' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            apim: { file: 'apim.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'SKU', data: 'sku' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            servicebus: { file: 'servicebus.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Namespace', data: 'name' },
+                { title: 'SKU', data: 'sku' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            eventhub: { file: 'eventhub.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Namespace', data: 'name' },
+                { title: 'SKU', data: 'sku' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            logicapps: { file: 'logicapps.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'State', data: 'state' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            datafactory: { file: 'datafactory.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            synapse: { file: 'synapse.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Workspace Name', data: 'name' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            databricks: { file: 'databricks.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Workspace Name', data: 'name' },
+                { title: 'SKU', data: 'sku' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            mlworkspace: { file: 'mlworkspace.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Workspace Name', data: 'name' },
+                { title: 'SKU', data: 'sku' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            cognitiveservices: { file: 'cognitiveservices.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Kind', data: 'kind' },
+                { title: 'SKU', data: 'sku' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            devops: { file: 'devops.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Organization', data: 'name' },
+                { title: 'Project Count', data: 'project_count' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]}
+        };
+
+        const allServicesColumns = [
+            { title: 'Account', data: 'account' },
+            { title: 'Service', data: 'service_type', render: (val) => `<span class="badge badge-info">${val}</span>` },
+            { title: 'Name', data: 'name' },
+            { title: 'Resource Group', data: 'resource_group' },
+            { title: 'Location', data: 'location' },
+            { title: 'Removed Date', data: 'removed_date' },
+            { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+        ];
+
+        let currentDt = null;
+
+        function filterByDateRange(data) {
+            const dateFrom = document.getElementById('dateFrom').value;
+            const dateTo = document.getElementById('dateTo').value;
+            if (!dateFrom && !dateTo) return data;
+            return data.filter(item => {
+                if (!item.removed_date || item.removed_date === 'N/A') return true;
+                const itemDate = new Date(item.removed_date);
+                if (isNaN(itemDate.getTime())) return true;
+                if (dateFrom && new Date(dateFrom) > itemDate) return false;
+                if (dateTo && new Date(dateTo) < itemDate) return false;
+                return true;
+            });
+        }
+
+        async function loadServiceData(serviceKey) {
+            if (currentDt) { currentDt.destroy(); currentDt = null; }
+            const searchInput = document.getElementById('globalSearch');
+            if (searchInput) searchInput.value = '';
+
+            const container = document.getElementById('table-container');
+            container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><span>Loading data...</span></div>';
+
+            if (serviceKey === 'all') {
+                let allData = [];
+                for (const [key, config] of Object.entries(serviceConfigs)) {
+                    try {
+                        const response = await fetch('../data/azure/' + config.file);
+                        if (response.ok) {
+                            const data = await response.json();
+                            const removed = data.filter(item => item.status === 'removed');
+                            removed.forEach(item => {
+                                allData.push({
+                                    account: item.account || 'N/A',
+                                    service_type: key.toUpperCase().replace('_', ' '),
+                                    name: item.name || item.display_name || 'N/A',
+                                    resource_group: item.resource_group || 'N/A',
+                                    location: item.location || 'N/A',
+                                    removed_date: item.removed_date || 'N/A',
+                                    status: item.status
+                                });
+                            });
+                        }
+                    } catch (e) {}
+                }
+
+                allData = filterByDateRange(allData);
+                document.getElementById('stat-total').textContent = allData.length;
+                container.innerHTML = '';
+                currentDt = new DataTable('table-container', { data: allData, columns: allServicesColumns, rowClass: () => 'removed' });
+            } else {
+                const config = serviceConfigs[serviceKey];
+                try {
+                    const response = await fetch('../data/azure/' + config.file);
+                    if (response.ok) {
+                        const data = await response.json();
+                        let removed = data.filter(item => item.status === 'removed');
+                        removed = filterByDateRange(removed);
+
+                        document.getElementById('stat-total').textContent = removed.length;
+                        container.innerHTML = '';
+                        currentDt = new DataTable('table-container', { data: removed, columns: config.columns, rowClass: () => 'removed' });
+                    } else {
+                        container.innerHTML = '<div class="empty-state"><div class="empty-state-title">No data available</div></div>';
+                        document.getElementById('stat-total').textContent = '0';
+                    }
+                } catch (e) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-state-title">Failed to load data</div></div>';
+                    document.getElementById('stat-total').textContent = '0';
+                }
+            }
+        }
+
+        document.getElementById('serviceSelector').addEventListener('change', (e) => {
+            const service = e.target.value;
+            const url = new URL(window.location);
+            ['page', 'sortCol', 'sortDir', 'search', 'rows'].forEach(p => url.searchParams.delete(p));
+            url.searchParams.forEach((value, key) => {
+                if (key.startsWith('filter_')) url.searchParams.delete(key);
+            });
+            if (service === 'all') {
+                url.searchParams.delete('service');
+            } else {
+                url.searchParams.set('service', service);
+            }
+            window.history.replaceState({}, '', url);
+            loadServiceData(service);
+        });
+
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            if (currentDt) {
+                const service = document.getElementById('serviceSelector').value;
+                currentDt.exportCSV(`azure-${service}-removed.csv`);
+            }
+        });
+
+        document.getElementById('dateFrom').addEventListener('change', () => loadServiceData(document.getElementById('serviceSelector').value));
+        document.getElementById('dateTo').addEventListener('change', () => loadServiceData(document.getElementById('serviceSelector').value));
+        document.getElementById('clearDatesBtn').addEventListener('click', () => {
+            document.getElementById('dateFrom').value = '';
+            document.getElementById('dateTo').value = '';
+            loadServiceData(document.getElementById('serviceSelector').value);
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialService = urlParams.get('service') || 'all';
+        document.getElementById('serviceSelector').value = initialService;
+        loadServiceData(initialService);
+    </script>
+</body>
+</html>

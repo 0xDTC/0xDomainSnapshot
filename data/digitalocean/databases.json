@@ -1,0 +1,44 @@
+[
+  {
+    "id": "db-postgresql-nyc1-12345",
+    "name": "prod-postgres",
+    "engine": "pg",
+    "version": "15",
+    "region": "nyc1",
+    "size": "db-s-2vcpu-4gb",
+    "num_nodes": 2,
+    "host": "prod-postgres-do-user-12345-0.b.db.ondigitalocean.com",
+    "port": 25060,
+    "database_status": "online",
+    "created_at": "2024-01-05T08:00:00Z",
+    "status": "active"
+  },
+  {
+    "id": "db-redis-nyc1-67890",
+    "name": "cache-redis",
+    "engine": "redis",
+    "version": "7",
+    "region": "nyc1",
+    "size": "db-s-1vcpu-1gb",
+    "num_nodes": 1,
+    "host": "cache-redis-do-user-12345-0.b.db.ondigitalocean.com",
+    "port": 25061,
+    "database_status": "online",
+    "created_at": "2024-01-10T10:00:00Z",
+    "status": "active"
+  },
+  {
+    "id": "db-mysql-sfo3-11111",
+    "name": "legacy-mysql",
+    "engine": "mysql",
+    "version": "8",
+    "region": "sfo3",
+    "size": "db-s-1vcpu-1gb",
+    "num_nodes": 1,
+    "host": "legacy-mysql-do-user-12345-0.b.db.ondigitalocean.com",
+    "port": 25060,
+    "database_status": "offline",
+    "created_at": "2022-06-01T12:00:00Z",
+    "status": "removed"
+  }
+]

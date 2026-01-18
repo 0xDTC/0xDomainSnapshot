@@ -1,0 +1,26 @@
+[
+  {
+    "cluster_identifier": "prod-analytics",
+    "node_type": "ra3.xlplus",
+    "cluster_status": "available",
+    "db_name": "analytics",
+    "master_username": "admin",
+    "endpoint": "prod-analytics.cxyz123abc.us-east-1.redshift.amazonaws.com",
+    "port": 5439,
+    "number_of_nodes": 4,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "cluster_identifier": "reporting-dwh",
+    "node_type": "dc2.large",
+    "cluster_status": "available",
+    "db_name": "reports",
+    "master_username": "admin",
+    "endpoint": "reporting-dwh.dabc456def.us-east-1.redshift.amazonaws.com",
+    "port": 5439,
+    "number_of_nodes": 2,
+    "region": "us-east-1",
+    "status": "active"
+  }
+]

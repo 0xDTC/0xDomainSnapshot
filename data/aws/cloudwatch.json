@@ -1,0 +1,35 @@
+[
+  {
+    "alarm_name": "HighCPUUtilization-Prod",
+    "alarm_arn": "arn:aws:cloudwatch:us-east-1:123456789012:alarm:HighCPUUtilization-Prod",
+    "metric_name": "CPUUtilization",
+    "namespace": "AWS/EC2",
+    "comparison_operator": "GreaterThanThreshold",
+    "threshold": 80,
+    "state": "OK",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "alarm_name": "DatabaseConnections",
+    "alarm_arn": "arn:aws:cloudwatch:us-east-1:123456789012:alarm:DatabaseConnections",
+    "metric_name": "DatabaseConnections",
+    "namespace": "AWS/RDS",
+    "comparison_operator": "GreaterThanThreshold",
+    "threshold": 100,
+    "state": "ALARM",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "alarm_name": "LambdaErrors",
+    "alarm_arn": "arn:aws:cloudwatch:us-east-1:123456789012:alarm:LambdaErrors",
+    "metric_name": "Errors",
+    "namespace": "AWS/Lambda",
+    "comparison_operator": "GreaterThanThreshold",
+    "threshold": 5,
+    "state": "OK",
+    "region": "us-east-1",
+    "status": "active"
+  }
+]

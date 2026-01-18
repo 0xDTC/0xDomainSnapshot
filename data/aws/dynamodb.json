@@ -1,0 +1,38 @@
+[
+  {
+    "table_name": "users",
+    "table_arn": "arn:aws:dynamodb:us-east-1:123456789012:table/users",
+    "table_status": "ACTIVE",
+    "partition_key": "user_id",
+    "sort_key": null,
+    "billing_mode": "PAY_PER_REQUEST",
+    "item_count": 125000,
+    "size_bytes": 52428800,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "table_name": "sessions",
+    "table_arn": "arn:aws:dynamodb:us-east-1:123456789012:table/sessions",
+    "table_status": "ACTIVE",
+    "partition_key": "session_id",
+    "sort_key": "timestamp",
+    "billing_mode": "PROVISIONED",
+    "item_count": 50000,
+    "size_bytes": 10485760,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "table_name": "legacy_logs",
+    "table_arn": "arn:aws:dynamodb:us-west-2:123456789012:table/legacy_logs",
+    "table_status": "DELETING",
+    "partition_key": "log_id",
+    "sort_key": null,
+    "billing_mode": "PAY_PER_REQUEST",
+    "item_count": 0,
+    "size_bytes": 0,
+    "region": "us-west-2",
+    "status": "removed"
+  }
+]

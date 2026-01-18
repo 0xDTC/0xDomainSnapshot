@@ -1,0 +1,38 @@
+[
+  {
+    "db_instance_description": "Production MySQL",
+    "db_instance_id": "rm-uf6abc123def456gh",
+    "engine": "MySQL",
+    "engine_version": "8.0",
+    "db_instance_class": "mysql.n4.medium.2c",
+    "region_id": "cn-hangzhou",
+    "db_instance_storage": 200,
+    "connection_string": "rm-uf6abc123def456gh.mysql.rds.aliyuncs.com",
+    "db_instance_status": "Running",
+    "status": "active"
+  },
+  {
+    "db_instance_description": "Analytics PostgreSQL",
+    "db_instance_id": "pgm-uf6def456ghi789jk",
+    "engine": "PostgreSQL",
+    "engine_version": "15.0",
+    "db_instance_class": "pg.n2.medium.2c",
+    "region_id": "cn-hangzhou",
+    "db_instance_storage": 500,
+    "connection_string": "pgm-uf6def456ghi789jk.pg.rds.aliyuncs.com",
+    "db_instance_status": "Running",
+    "status": "active"
+  },
+  {
+    "db_instance_description": "Legacy SQL Server",
+    "db_instance_id": "rm-uf6ghi789jkl012mn",
+    "engine": "SQLServer",
+    "engine_version": "2019_std_ha",
+    "db_instance_class": "mssql.x4.medium.s2",
+    "region_id": "cn-shanghai",
+    "db_instance_storage": 100,
+    "connection_string": null,
+    "db_instance_status": "Deleted",
+    "status": "removed"
+  }
+]

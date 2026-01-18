@@ -1,0 +1,54 @@
+[
+    {
+        "user_name": "admin-user",
+        "user_id": "AIDAEXAMPLE1234567890",
+        "arn": "arn:aws:iam::123456789012:user/admin-user",
+        "created_date": "2023-01-15",
+        "password_last_used": "2025-01-16",
+        "mfa_enabled": true,
+        "access_keys": 1,
+        "groups": ["Administrators"],
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "user_name": "deploy-bot",
+        "user_id": "AIDAEXAMPLE2345678901",
+        "arn": "arn:aws:iam::123456789012:user/deploy-bot",
+        "created_date": "2024-03-20",
+        "password_last_used": null,
+        "mfa_enabled": false,
+        "access_keys": 2,
+        "groups": ["Deployers"],
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "user_name": "developer-john",
+        "user_id": "AIDAEXAMPLE3456789012",
+        "arn": "arn:aws:iam::123456789012:user/developer-john",
+        "created_date": "2024-06-01",
+        "password_last_used": "2025-01-15",
+        "mfa_enabled": true,
+        "access_keys": 1,
+        "groups": ["Developers", "ReadOnly"],
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "user_name": "former-employee",
+        "user_id": "AIDAEXAMPLE4567890123",
+        "arn": "arn:aws:iam::123456789012:user/former-employee",
+        "created_date": "2023-06-15",
+        "password_last_used": "2024-08-30",
+        "mfa_enabled": false,
+        "access_keys": 0,
+        "groups": [],
+        "status": "removed",
+        "discovery_date": "2024-01-10",
+        "last_seen": "2024-09-01"
+    }
+]

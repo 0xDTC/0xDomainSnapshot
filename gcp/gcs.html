@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCP Cloud Storage - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+
+    <main>
+        <div class="page-header provider-gcp">
+            <h1>GCP Cloud Storage Buckets</h1>
+            <p>All Cloud Storage buckets across GCP projects</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card total">
+                <div class="stat-value" id="stat-total">-</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-card active">
+                <div class="stat-value" id="stat-active">-</div>
+                <div class="stat-label">Active</div>
+            </div>
+            <div class="stat-card removed">
+                <div class="stat-value" id="stat-removed">-</div>
+                <div class="stat-label">Removed</div>
+            </div>
+        </div>
+
+        <div class="table-controls">
+            <div class="search-box">
+                <input type="text" id="globalSearch" placeholder="Search all columns... (Ctrl+F)">
+            </div>
+            <button class="btn btn-secondary" onclick="dt.exportCSV('gcp-gcs.csv')">Export CSV</button>
+        </div>
+
+        <div id="table-container"></div>
+    </main>
+
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const dt = new DataTable('table-container', {
+            dataUrl: '../data/gcp/gcs.json',
+            filter: (row) => row.status !== 'removed',
+            columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Bucket Name', data: 'bucket_name' },
+                { title: 'Location', data: 'location' },
+                { title: 'Storage Class', data: 'storage_class' },
+                { title: 'Created', data: 'created_date' },
+                { title: 'Public Access', data: 'public_access', render: (val) => val ?
+                    '<span class="badge badge-removed">Public</span>' :
+                    '<span class="badge badge-active">Private</span>' },
+                { title: 'Versioning', data: 'versioning', render: (val) => val ? 'Enabled' : 'Disabled' },
+                { title: 'Lifecycle Rules', data: 'lifecycle_rules' },
+                { title: 'Project', data: 'project' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ],
+            rowClass: (row) => row.status === 'removed' ? 'removed' : '',
+            onDataLoaded: (data) => {
+                const stats = dt.getStats();
+                updateStats(stats);
+            }
+        });
+    </script>
+</body>
+</html>

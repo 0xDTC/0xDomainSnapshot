@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Cache Redis - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+    <main>
+        <div class="page-header provider-azure">
+            <h1>Azure Cache for Redis</h1>
+            <p>Redis caches across Azure subscriptions</p>
+        </div>
+        <div class="stats-bar">
+            <div class="stat-card total"><div class="stat-value" id="stat-total">-</div><div class="stat-label">Total</div></div>
+            <div class="stat-card active"><div class="stat-value" id="stat-active">-</div><div class="stat-label">Active</div></div>
+            <div class="stat-card removed"><div class="stat-value" id="stat-removed">-</div><div class="stat-label">Removed</div></div>
+        </div>
+        <div class="table-controls">
+            <div class="search-box"><input type="text" id="globalSearch" placeholder="Search..."></div>
+            <button class="btn btn-secondary" onclick="dt.exportCSV('azure-redis.csv')">Export CSV</button>
+        </div>
+        <div id="table-container"></div>
+    </main>
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const dt = new DataTable('table-container', {
+            dataUrl: '../data/azure/redis.json',
+            filter: (row) => row.status !== 'removed',
+            columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Cache Name', data: 'cache_name' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'SKU', data: 'sku' },
+                { title: 'Capacity', data: 'capacity' },
+                { title: 'Port', data: 'port' },
+                { title: 'SSL Port', data: 'ssl_port' },
+                { title: 'TLS Version', data: 'minimum_tls_version' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ],
+            rowClass: (row) => row.status === 'removed' ? 'removed' : '',
+            onDataLoaded: (data) => updateStats(dt.getStats())
+        });
+    </script>
+</body>
+</html>

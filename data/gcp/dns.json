@@ -1,0 +1,46 @@
+[
+    {
+        "zone_name": "prod-zone",
+        "dns_name": "example.com.",
+        "visibility": "public",
+        "record_count": 25,
+        "name_servers": ["ns-cloud-a1.googledomains.com", "ns-cloud-a2.googledomains.com"],
+        "project": "my-prod-project",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "zone_name": "internal-zone",
+        "dns_name": "internal.company.local.",
+        "visibility": "private",
+        "record_count": 80,
+        "name_servers": [],
+        "project": "my-prod-project",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "zone_name": "staging-zone",
+        "dns_name": "staging.example.com.",
+        "visibility": "public",
+        "record_count": 12,
+        "name_servers": ["ns-cloud-b1.googledomains.com", "ns-cloud-b2.googledomains.com"],
+        "project": "my-staging-project",
+        "status": "active",
+        "discovery_date": "2025-01-08",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "zone_name": "old-test-zone",
+        "dns_name": "test.example.com.",
+        "visibility": "public",
+        "record_count": 0,
+        "name_servers": [],
+        "project": "my-test-project",
+        "status": "removed",
+        "discovery_date": "2024-01-01",
+        "last_seen": "2024-06-15"
+    }
+]

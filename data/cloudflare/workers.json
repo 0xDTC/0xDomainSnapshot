@@ -1,0 +1,5 @@
+[
+    {"name": "api-router", "account_id": "abc123", "created": "2024-01-15", "routes": 3, "status": "active"},
+    {"name": "image-resizer", "account_id": "abc123", "created": "2024-02-20", "routes": 1, "status": "active"},
+    {"name": "auth-handler", "account_id": "abc123", "created": "2023-11-10", "routes": 2, "status": "removed", "removed_date": "2025-01-10"}
+]

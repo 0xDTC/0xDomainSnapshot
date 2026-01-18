@@ -1,0 +1,54 @@
+[
+    {
+        "bucket_name": "prod-assets-bucket",
+        "region": "us-east-1",
+        "created_date": "2023-05-10",
+        "versioning": true,
+        "encryption": "AES256",
+        "public_access": false,
+        "size_gb": 156.5,
+        "object_count": 45230,
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "bucket_name": "app-logs-archive",
+        "region": "us-east-1",
+        "created_date": "2024-01-20",
+        "versioning": false,
+        "encryption": "aws:kms",
+        "public_access": false,
+        "size_gb": 892.3,
+        "object_count": 1250000,
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "bucket_name": "static-website-hosting",
+        "region": "us-west-2",
+        "created_date": "2024-06-15",
+        "versioning": true,
+        "encryption": "AES256",
+        "public_access": true,
+        "size_gb": 2.1,
+        "object_count": 340,
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "bucket_name": "old-backup-data",
+        "region": "us-east-1",
+        "created_date": "2022-08-01",
+        "versioning": false,
+        "encryption": null,
+        "public_access": false,
+        "size_gb": 0,
+        "object_count": 0,
+        "status": "removed",
+        "discovery_date": "2024-01-01",
+        "last_seen": "2024-10-15"
+    }
+]

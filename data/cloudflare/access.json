@@ -1,0 +1,4 @@
+[
+    {"name": "Admin Panel", "account_id": "abc123", "type": "self_hosted", "domain": "admin.example.com", "created": "2024-01-10", "status": "active"},
+    {"name": "Dev Tools", "account_id": "abc123", "type": "self_hosted", "domain": "dev.example.com", "created": "2024-02-28", "status": "active"}
+]

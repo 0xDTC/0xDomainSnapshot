@@ -1,0 +1,62 @@
+[
+    {
+        "vm_name": "prod-web-vm-01",
+        "resource_group": "rg-production",
+        "vm_size": "Standard_D4s_v3",
+        "os_type": "Linux",
+        "os_disk": "Ubuntu 22.04 LTS",
+        "private_ip": "10.1.0.10",
+        "public_ip": "20.85.123.45",
+        "location": "eastus",
+        "subscription": "Production",
+        "status": "active",
+        "power_state": "running",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "vm_name": "prod-api-vm-01",
+        "resource_group": "rg-production",
+        "vm_size": "Standard_D8s_v3",
+        "os_type": "Linux",
+        "os_disk": "Ubuntu 22.04 LTS",
+        "private_ip": "10.1.0.11",
+        "public_ip": null,
+        "location": "eastus",
+        "subscription": "Production",
+        "status": "active",
+        "power_state": "running",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "vm_name": "staging-app-vm",
+        "resource_group": "rg-staging",
+        "vm_size": "Standard_B2s",
+        "os_type": "Windows",
+        "os_disk": "Windows Server 2022",
+        "private_ip": "10.2.0.5",
+        "public_ip": "20.85.200.100",
+        "location": "westus2",
+        "subscription": "Development",
+        "status": "active",
+        "power_state": "stopped",
+        "discovery_date": "2025-01-08",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "vm_name": "legacy-server-01",
+        "resource_group": "rg-legacy",
+        "vm_size": "Standard_B1s",
+        "os_type": "Linux",
+        "os_disk": "Ubuntu 18.04 LTS",
+        "private_ip": "10.3.0.10",
+        "public_ip": null,
+        "location": "eastus",
+        "subscription": "Production",
+        "status": "removed",
+        "power_state": "deallocated",
+        "discovery_date": "2024-02-15",
+        "last_seen": "2024-09-30"
+    }
+]

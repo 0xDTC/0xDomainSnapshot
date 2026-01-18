@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure ML Workspaces - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+    <main>
+        <div class="page-header provider-azure"><h1>Azure Machine Learning</h1><p>ML workspaces</p></div>
+        <div class="stats-bar">
+            <div class="stat-card total"><div class="stat-value" id="stat-total">-</div><div class="stat-label">Total</div></div>
+            <div class="stat-card active"><div class="stat-value" id="stat-active">-</div><div class="stat-label">Active</div></div>
+            <div class="stat-card removed"><div class="stat-value" id="stat-removed">-</div><div class="stat-label">Removed</div></div>
+        </div>
+        <div class="table-controls">
+            <div class="search-box"><input type="text" id="globalSearch" placeholder="Search..."></div>
+            <button class="btn btn-secondary" onclick="dt.exportCSV('azure-mlworkspace.csv')">Export CSV</button>
+        </div>
+        <div id="table-container"></div>
+    </main>
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const dt = new DataTable('table-container', {
+            dataUrl: '../data/azure/mlworkspace.json',
+            filter: (row) => row.status !== 'removed',
+            columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Workspace Name', data: 'name' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Location', data: 'location' },
+                { title: 'SKU', data: 'sku' },
+                { title: 'Compute Instances', data: 'compute_instances' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ],
+            rowClass: (row) => row.status === 'removed' ? 'removed' : '',
+            onDataLoaded: (data) => updateStats(dt.getStats())
+        });
+    </script>
+</body>
+</html>

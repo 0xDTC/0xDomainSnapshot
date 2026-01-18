@@ -1,0 +1,38 @@
+[
+  {
+    "name": "prod-assets-bucket",
+    "location": "oss-cn-hangzhou",
+    "storage_class": "Standard",
+    "acl": "private",
+    "versioning": true,
+    "creation_date": "2024-01-15",
+    "status": "active"
+  },
+  {
+    "name": "static-website-bucket",
+    "location": "oss-cn-hangzhou",
+    "storage_class": "Standard",
+    "acl": "public-read",
+    "versioning": false,
+    "creation_date": "2024-02-01",
+    "status": "active"
+  },
+  {
+    "name": "backup-archive-bucket",
+    "location": "oss-cn-shanghai",
+    "storage_class": "Archive",
+    "acl": "private",
+    "versioning": false,
+    "creation_date": "2024-03-01",
+    "status": "active"
+  },
+  {
+    "name": "old-temp-bucket",
+    "location": "oss-cn-beijing",
+    "storage_class": "Standard",
+    "acl": "private",
+    "versioning": false,
+    "creation_date": "2022-06-01",
+    "status": "removed"
+  }
+]

@@ -1,0 +1,58 @@
+[
+    {
+        "email": "admin@my-prod-project.iam.gserviceaccount.com",
+        "display_name": "Project Admin Service Account",
+        "unique_id": "100000000000000001",
+        "created_date": "2023-01-15",
+        "key_count": 1,
+        "last_key_used": "2025-01-16",
+        "disabled": false,
+        "project": "my-prod-project",
+        "roles": ["roles/owner"],
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "email": "compute-sa@my-prod-project.iam.gserviceaccount.com",
+        "display_name": "Compute Service Account",
+        "unique_id": "100000000000000002",
+        "created_date": "2024-03-01",
+        "key_count": 2,
+        "last_key_used": "2025-01-15",
+        "disabled": false,
+        "project": "my-prod-project",
+        "roles": ["roles/compute.admin", "roles/storage.objectViewer"],
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "email": "ci-cd-bot@my-prod-project.iam.gserviceaccount.com",
+        "display_name": "CI/CD Pipeline Service Account",
+        "unique_id": "100000000000000003",
+        "created_date": "2024-06-15",
+        "key_count": 1,
+        "last_key_used": "2025-01-14",
+        "disabled": false,
+        "project": "my-prod-project",
+        "roles": ["roles/cloudbuild.builds.editor"],
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "email": "old-service@my-test-project.iam.gserviceaccount.com",
+        "display_name": "Old Test Service Account",
+        "unique_id": "100000000000000004",
+        "created_date": "2023-06-01",
+        "key_count": 0,
+        "last_key_used": null,
+        "disabled": true,
+        "project": "my-test-project",
+        "roles": [],
+        "status": "removed",
+        "discovery_date": "2024-01-01",
+        "last_seen": "2024-08-01"
+    }
+]

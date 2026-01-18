@@ -1,0 +1,5 @@
+[
+    {"name": "docs-site", "account_id": "abc123", "production_branch": "main", "created": "2024-03-01", "status": "active"},
+    {"name": "marketing-site", "account_id": "abc123", "production_branch": "main", "created": "2024-01-20", "status": "active"},
+    {"name": "old-blog", "account_id": "abc123", "production_branch": "main", "created": "2023-06-15", "status": "removed", "removed_date": "2025-01-05"}
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "name": "prod-assets-bucket",
+    "namespace": "my-oci-tenancy",
+    "compartment_id": "ocid1.compartment.oc1..aaa111bbb222",
+    "storage_tier": "Standard",
+    "versioning": true,
+    "public_access_type": "NoPublicAccess",
+    "created_date": "2024-01-01",
+    "region": "us-ashburn-1",
+    "status": "active"
+  },
+  {
+    "name": "backups-bucket",
+    "namespace": "my-oci-tenancy",
+    "compartment_id": "ocid1.compartment.oc1..aaa111bbb222",
+    "storage_tier": "Archive",
+    "versioning": false,
+    "public_access_type": "NoPublicAccess",
+    "created_date": "2024-02-15",
+    "region": "us-ashburn-1",
+    "status": "active"
+  },
+  {
+    "name": "static-website",
+    "namespace": "my-oci-tenancy",
+    "compartment_id": "ocid1.compartment.oc1..aaa111bbb222",
+    "storage_tier": "Standard",
+    "versioning": false,
+    "public_access_type": "ObjectRead",
+    "created_date": "2024-03-01",
+    "region": "us-ashburn-1",
+    "status": "active"
+  }
+]

@@ -1,0 +1,4 @@
+[
+    {"id": "img-001", "account_id": "abc123", "filename": "logo.png", "uploaded": "2024-01-05", "status": "active"},
+    {"id": "img-002", "account_id": "abc123", "filename": "banner.jpg", "uploaded": "2024-02-12", "status": "active"}
+]

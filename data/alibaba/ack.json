@@ -1,0 +1,35 @@
+[
+  {
+    "name": "prod-ack-cluster",
+    "cluster_id": "c1234567890abcdefghij",
+    "cluster_type": "ManagedKubernetes",
+    "kubernetes_version": "1.28.3-aliyun.1",
+    "region_id": "cn-hangzhou",
+    "node_count": 6,
+    "state": "running",
+    "endpoint": "https://47.98.100.200:6443",
+    "status": "active"
+  },
+  {
+    "name": "staging-ack-cluster",
+    "cluster_id": "c0987654321zyxwvutsrq",
+    "cluster_type": "ManagedKubernetes",
+    "kubernetes_version": "1.27.8-aliyun.1",
+    "region_id": "cn-shanghai",
+    "node_count": 3,
+    "state": "running",
+    "endpoint": "https://101.132.50.100:6443",
+    "status": "active"
+  },
+  {
+    "name": "dev-ack-old",
+    "cluster_id": "cabc123def456ghijklm",
+    "cluster_type": "ManagedKubernetes",
+    "kubernetes_version": "1.24.6-aliyun.1",
+    "region_id": "cn-beijing",
+    "node_count": 0,
+    "state": "deleting",
+    "endpoint": null,
+    "status": "removed"
+  }
+]

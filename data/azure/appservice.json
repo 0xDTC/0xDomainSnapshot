@@ -1,0 +1,35 @@
+[
+  {
+    "name": "prod-api-app",
+    "resource_group": "rg-prod-apps",
+    "location": "eastus",
+    "kind": "app,linux",
+    "sku": "P1v3",
+    "default_hostname": "prod-api-app.azurewebsites.net",
+    "https_only": true,
+    "state": "Running",
+    "status": "active"
+  },
+  {
+    "name": "frontend-webapp",
+    "resource_group": "rg-prod-apps",
+    "location": "eastus",
+    "kind": "app",
+    "sku": "S1",
+    "default_hostname": "frontend-webapp.azurewebsites.net",
+    "https_only": true,
+    "state": "Running",
+    "status": "active"
+  },
+  {
+    "name": "legacy-portal",
+    "resource_group": "rg-legacy",
+    "location": "westus",
+    "kind": "app",
+    "sku": "B1",
+    "default_hostname": "legacy-portal.azurewebsites.net",
+    "https_only": false,
+    "state": "Stopped",
+    "status": "removed"
+  }
+]

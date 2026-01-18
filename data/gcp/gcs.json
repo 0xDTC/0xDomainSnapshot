@@ -1,0 +1,54 @@
+[
+    {
+        "bucket_name": "prod-assets-bucket-gcp",
+        "location": "US",
+        "storage_class": "STANDARD",
+        "created_date": "2024-01-15",
+        "public_access": false,
+        "versioning": true,
+        "lifecycle_rules": 2,
+        "project": "my-prod-project",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "bucket_name": "app-logs-archive-gcp",
+        "location": "US-CENTRAL1",
+        "storage_class": "NEARLINE",
+        "created_date": "2024-06-01",
+        "public_access": false,
+        "versioning": false,
+        "lifecycle_rules": 1,
+        "project": "my-prod-project",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "bucket_name": "staging-temp-files",
+        "location": "US-WEST1",
+        "storage_class": "STANDARD",
+        "created_date": "2024-10-01",
+        "public_access": false,
+        "versioning": false,
+        "lifecycle_rules": 0,
+        "project": "my-staging-project",
+        "status": "active",
+        "discovery_date": "2025-01-08",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "bucket_name": "old-backup-bucket-gcp",
+        "location": "US",
+        "storage_class": "COLDLINE",
+        "created_date": "2023-01-01",
+        "public_access": false,
+        "versioning": false,
+        "lifecycle_rules": 0,
+        "project": "my-prod-project",
+        "status": "removed",
+        "discovery_date": "2024-01-01",
+        "last_seen": "2024-09-15"
+    }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "name": "prod-https-lb",
+    "project": "my-gcp-project",
+    "type": "EXTERNAL_MANAGED",
+    "protocol": "HTTPS",
+    "ip_address": "34.120.123.45",
+    "port_range": "443",
+    "backends_count": 3,
+    "health_check": "healthy",
+    "status": "active"
+  },
+  {
+    "name": "api-tcp-lb",
+    "project": "my-gcp-project",
+    "type": "EXTERNAL",
+    "protocol": "TCP",
+    "ip_address": "35.200.67.89",
+    "port_range": "8080",
+    "backends_count": 2,
+    "health_check": "healthy",
+    "status": "active"
+  },
+  {
+    "name": "internal-lb",
+    "project": "my-gcp-project",
+    "type": "INTERNAL",
+    "protocol": "TCP",
+    "ip_address": "10.128.0.100",
+    "port_range": "80",
+    "backends_count": 4,
+    "health_check": "healthy",
+    "status": "active"
+  }
+]

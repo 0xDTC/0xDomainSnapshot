@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCP IAM - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+
+    <main>
+        <div class="page-header provider-gcp">
+            <h1>GCP IAM Service Accounts</h1>
+            <p>All service accounts across GCP projects</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card total">
+                <div class="stat-value" id="stat-total">-</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-card active">
+                <div class="stat-value" id="stat-active">-</div>
+                <div class="stat-label">Active</div>
+            </div>
+            <div class="stat-card removed">
+                <div class="stat-value" id="stat-removed">-</div>
+                <div class="stat-label">Removed</div>
+            </div>
+        </div>
+
+        <div class="table-controls">
+            <div class="search-box">
+                <input type="text" id="globalSearch" placeholder="Search all columns... (Ctrl+F)">
+            </div>
+            <button class="btn btn-secondary" onclick="dt.exportCSV('gcp-iam.csv')">Export CSV</button>
+        </div>
+
+        <div id="table-container"></div>
+    </main>
+
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const dt = new DataTable('table-container', {
+            dataUrl: '../data/gcp/iam.json',
+            filter: (row) => row.status !== 'removed',
+            columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Email', data: 'email', className: 'data-cell' },
+                { title: 'Display Name', data: 'display_name' },
+                { title: 'Created', data: 'created_date' },
+                { title: 'Keys', data: 'key_count' },
+                { title: 'Last Key Used', data: 'last_key_used', render: (val) => val || 'Never' },
+                { title: 'Disabled', data: 'disabled', render: (val) => val ?
+                    '<span class="badge badge-removed">Yes</span>' :
+                    '<span class="badge badge-active">No</span>' },
+                { title: 'Project', data: 'project' },
+                { title: 'Roles', data: 'roles', render: (val) =>
+                    val && val.length ? val.join(', ') : '-' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ],
+            rowClass: (row) => row.status === 'removed' ? 'removed' : '',
+            onDataLoaded: (data) => {
+                const stats = dt.getStats();
+                updateStats(stats);
+            }
+        });
+    </script>
+</body>
+</html>

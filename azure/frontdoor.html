@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Front Door - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+    <main>
+        <div class="page-header provider-azure"><h1>Azure Front Door</h1><p>Global load balancers</p></div>
+        <div class="stats-bar">
+            <div class="stat-card total"><div class="stat-value" id="stat-total">-</div><div class="stat-label">Total</div></div>
+            <div class="stat-card active"><div class="stat-value" id="stat-active">-</div><div class="stat-label">Active</div></div>
+            <div class="stat-card removed"><div class="stat-value" id="stat-removed">-</div><div class="stat-label">Removed</div></div>
+        </div>
+        <div class="table-controls">
+            <div class="search-box"><input type="text" id="globalSearch" placeholder="Search..."></div>
+            <button class="btn btn-secondary" onclick="dt.exportCSV('azure-frontdoor.csv')">Export CSV</button>
+        </div>
+        <div id="table-container"></div>
+    </main>
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const dt = new DataTable('table-container', {
+            dataUrl: '../data/azure/frontdoor.json',
+            filter: (row) => row.status !== 'removed',
+            columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Host Name', data: 'host_name', className: 'data-cell' },
+                { title: 'Routing Rules', data: 'routing_rules_count' },
+                { title: 'Backend Pools', data: 'backend_pools_count' },
+                { title: 'WAF', data: 'waf_enabled' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ],
+            rowClass: (row) => row.status === 'removed' ? 'removed' : '',
+            onDataLoaded: (data) => updateStats(dt.getStats())
+        });
+    </script>
+</body>
+</html>

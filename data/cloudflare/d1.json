@@ -1,0 +1,4 @@
+[
+    {"name": "app-database", "account_id": "abc123", "created": "2024-05-01", "version": "v1", "status": "active"},
+    {"name": "analytics-db", "account_id": "abc123", "created": "2024-06-15", "version": "v1", "status": "active"}
+]

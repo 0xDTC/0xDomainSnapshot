@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Balancers - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+    <main>
+        <div class="page-header provider-gcp">
+            <h1>GCP Load Balancers</h1>
+            <p>Load balancers across GCP projects</p>
+        </div>
+        <div class="stats-bar">
+            <div class="stat-card total"><div class="stat-value" id="stat-total">-</div><div class="stat-label">Total</div></div>
+            <div class="stat-card active"><div class="stat-value" id="stat-active">-</div><div class="stat-label">Active</div></div>
+            <div class="stat-card removed"><div class="stat-value" id="stat-removed">-</div><div class="stat-label">Removed</div></div>
+        </div>
+        <div class="table-controls">
+            <div class="search-box"><input type="text" id="globalSearch" placeholder="Search..."></div>
+            <button class="btn btn-secondary" onclick="dt.exportCSV('gcp-loadbalancers.csv')">Export CSV</button>
+        </div>
+        <div id="table-container"></div>
+    </main>
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const dt = new DataTable('table-container', {
+            dataUrl: '../data/gcp/loadbalancing.json',
+            filter: (row) => row.status !== 'removed',
+            columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Type', data: 'lb_type' },
+                { title: 'Scheme', data: 'scheme' },
+                { title: 'IP Address', data: 'ip_address' },
+                { title: 'Protocol', data: 'protocol' },
+                { title: 'Port Range', data: 'port_range' },
+                { title: 'Backend Services', data: 'backend_count' },
+                { title: 'Project', data: 'project' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ],
+            rowClass: (row) => row.status === 'removed' ? 'removed' : '',
+            onDataLoaded: (data) => updateStats(dt.getStats())
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+[
+  {
+    "name": "prod-api-cluster",
+    "arn": "arn:aws:eks:us-east-1:123456789012:cluster/prod-api-cluster",
+    "version": "1.28",
+    "endpoint": "https://ABCD1234.gr7.us-east-1.eks.amazonaws.com",
+    "role_arn": "arn:aws:iam::123456789012:role/eks-cluster-role",
+    "vpc_id": "vpc-0a1b2c3d4e5f6g7h8",
+    "region": "us-east-1",
+    "created_at": "2024-01-15",
+    "status": "active"
+  },
+  {
+    "name": "staging-cluster",
+    "arn": "arn:aws:eks:us-west-2:123456789012:cluster/staging-cluster",
+    "version": "1.27",
+    "endpoint": "https://EFGH5678.gr7.us-west-2.eks.amazonaws.com",
+    "role_arn": "arn:aws:iam::123456789012:role/eks-cluster-role",
+    "vpc_id": "vpc-1a2b3c4d5e6f7g8h9",
+    "region": "us-west-2",
+    "created_at": "2024-02-20",
+    "status": "active"
+  },
+  {
+    "name": "dev-cluster-old",
+    "arn": "arn:aws:eks:eu-west-1:123456789012:cluster/dev-cluster-old",
+    "version": "1.24",
+    "endpoint": "https://IJKL9012.gr7.eu-west-1.eks.amazonaws.com",
+    "role_arn": "arn:aws:iam::123456789012:role/eks-cluster-role",
+    "vpc_id": "vpc-2a3b4c5d6e7f8g9h0",
+    "region": "eu-west-1",
+    "created_at": "2023-06-10",
+    "status": "removed"
+  }
+]

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure VMs - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+
+    <main>
+        <div class="page-header provider-azure">
+            <h1>Azure Virtual Machines</h1>
+            <p>All virtual machines across Azure subscriptions</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card total">
+                <div class="stat-value" id="stat-total">-</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-card active">
+                <div class="stat-value" id="stat-active">-</div>
+                <div class="stat-label">Active</div>
+            </div>
+            <div class="stat-card removed">
+                <div class="stat-value" id="stat-removed">-</div>
+                <div class="stat-label">Removed</div>
+            </div>
+        </div>
+
+        <div class="table-controls">
+            <div class="search-box">
+                <input type="text" id="globalSearch" placeholder="Search all columns... (Ctrl+F)">
+            </div>
+            <button class="btn btn-secondary" onclick="dt.exportCSV('azure-vms.csv')">Export CSV</button>
+        </div>
+
+        <div id="table-container"></div>
+    </main>
+
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const dt = new DataTable('table-container', {
+            dataUrl: '../data/azure/vms.json',
+            filter: (row) => row.status !== 'removed',
+            columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'VM Name', data: 'vm_name' },
+                { title: 'Resource Group', data: 'resource_group' },
+                { title: 'Size', data: 'vm_size' },
+                { title: 'OS', data: 'os_type' },
+                { title: 'OS Disk', data: 'os_disk' },
+                { title: 'Private IP', data: 'private_ip' },
+                { title: 'Public IP', data: 'public_ip', render: (val) => val || '-' },
+                { title: 'Location', data: 'location' },
+                { title: 'Power State', data: 'power_state', render: (val) => {
+                    const type = val === 'running' ? 'running' : val === 'stopped' ? 'stopped' : 'terminated';
+                    return renderBadge(val, type);
+                }},
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ],
+            rowClass: (row) => row.status === 'removed' ? 'removed' : '',
+            onDataLoaded: (data) => {
+                const stats = dt.getStats();
+                updateStats(stats);
+            }
+        });
+    </script>
+</body>
+</html>

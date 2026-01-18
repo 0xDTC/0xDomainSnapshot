@@ -1,0 +1,26 @@
+[
+  {
+    "name": "prod-redis-cache",
+    "resource_group": "rg-prod-cache",
+    "location": "eastus",
+    "sku": "Premium",
+    "capacity": 1,
+    "host_name": "prod-redis-cache.redis.cache.windows.net",
+    "ssl_port": 6380,
+    "non_ssl_port_enabled": false,
+    "provisioning_state": "Succeeded",
+    "status": "active"
+  },
+  {
+    "name": "session-cache",
+    "resource_group": "rg-prod-cache",
+    "location": "eastus",
+    "sku": "Standard",
+    "capacity": 1,
+    "host_name": "session-cache.redis.cache.windows.net",
+    "ssl_port": 6380,
+    "non_ssl_port_enabled": false,
+    "provisioning_state": "Succeeded",
+    "status": "active"
+  }
+]

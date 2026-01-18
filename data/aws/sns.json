@@ -1,0 +1,26 @@
+[
+  {
+    "topic_name": "alerts-critical",
+    "topic_arn": "arn:aws:sns:us-east-1:123456789012:alerts-critical",
+    "subscriptions": 5,
+    "display_name": "Critical Alerts",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "topic_name": "order-events",
+    "topic_arn": "arn:aws:sns:us-east-1:123456789012:order-events",
+    "subscriptions": 3,
+    "display_name": "Order Events",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "topic_name": "deprecated-notifications",
+    "topic_arn": "arn:aws:sns:us-west-2:123456789012:deprecated-notifications",
+    "subscriptions": 0,
+    "display_name": "Old Notifications",
+    "region": "us-west-2",
+    "status": "removed"
+  }
+]

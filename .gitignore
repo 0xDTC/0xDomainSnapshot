@@ -1,42 +1,40 @@
+# Override global gitignore - include these file types for this project
+!*.html
+!*.json
+!*.txt
+!*.yml
+!*.yaml
+
 # Credentials and secrets
 secret.txt
-.env
+*.env
+.env*
+credentials.json
+service-account.json
 *.key
 *.pem
 *.p12
 *.pfx
 *.keychain
 
-# Generated output files
-*_history.json
-*_last_check*.json
-domains.json
-godaddy_assets.json
-cloudflare_assets.json
-org_assets.json
-dns_records_master.json
-cloudflare_zones_cache.json
-
-# Generated reports
-GDdomain.md
-GDdomain.html
-Org-Assets.md
-Org-Assets.html
-DNS_Inventory.html
+# Generated data (uncomment if you don't want to track data)
+# data/
 
 # Logs
+.claude
 *.log
+logs/
 
-# Export files
-*.csv
-*.pdf
-*.zip
+# OS files
+.DS_Store
+Thumbs.db
+*~
 
-# Data directories
-Domain\ Pull/domains_history.json
-Subdomain\ Pull/data/
-Serve/*_last_check*.json
-Serve/*.log
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
 
 # Python
 __pycache__/
@@ -45,12 +43,20 @@ __pycache__/
 *.so
 .Python
 venv/
+.venv/
 env/
 ENV/
 
-# OS files
-.DS_Store
-Thumbs.db
-*~
-*.swp
-*.swo
+# Node (if adding build tools later)
+node_modules/
+package-lock.json
+
+# Temporary files
+*.tmp
+*.temp
+OLD/
+
+# Export files
+*.csv
+*.pdf
+*.zip

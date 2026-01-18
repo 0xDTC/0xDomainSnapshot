@@ -1,0 +1,32 @@
+[
+  {
+    "api_id": "abc123def4",
+    "api_name": "Orders API",
+    "api_type": "REST",
+    "endpoint": "https://abc123def4.execute-api.us-east-1.amazonaws.com/prod",
+    "stage": "prod",
+    "created_date": "2024-01-10",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "api_id": "ghi567jkl8",
+    "api_name": "WebSocket Events",
+    "api_type": "WEBSOCKET",
+    "endpoint": "wss://ghi567jkl8.execute-api.us-east-1.amazonaws.com/prod",
+    "stage": "prod",
+    "created_date": "2024-02-15",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "api_id": "mno901pqr2",
+    "api_name": "Legacy Users API",
+    "api_type": "REST",
+    "endpoint": "https://mno901pqr2.execute-api.us-west-2.amazonaws.com/v1",
+    "stage": "v1",
+    "created_date": "2022-06-01",
+    "region": "us-west-2",
+    "status": "removed"
+  }
+]

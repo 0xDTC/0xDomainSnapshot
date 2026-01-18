@@ -1,0 +1,28 @@
+[
+  {
+    "name": "prod-keyvault",
+    "resource_group": "rg-prod-security",
+    "location": "eastus",
+    "vault_uri": "https://prod-keyvault.vault.azure.net/",
+    "sku": "premium",
+    "soft_delete_enabled": true,
+    "purge_protection_enabled": true,
+    "secrets_count": 15,
+    "keys_count": 3,
+    "certificates_count": 2,
+    "status": "active"
+  },
+  {
+    "name": "staging-keyvault",
+    "resource_group": "rg-staging-security",
+    "location": "westus2",
+    "vault_uri": "https://staging-keyvault.vault.azure.net/",
+    "sku": "standard",
+    "soft_delete_enabled": true,
+    "purge_protection_enabled": false,
+    "secrets_count": 8,
+    "keys_count": 1,
+    "certificates_count": 1,
+    "status": "active"
+  }
+]

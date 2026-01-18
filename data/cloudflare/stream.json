@@ -1,0 +1,4 @@
+[
+    {"name": "product-demo", "account_id": "abc123", "duration": 120, "uploaded": "2024-03-01", "status": "active"},
+    {"name": "tutorial-video", "account_id": "abc123", "duration": 300, "uploaded": "2024-04-15", "status": "active"}
+]

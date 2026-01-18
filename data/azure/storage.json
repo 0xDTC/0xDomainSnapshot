@@ -1,0 +1,62 @@
+[
+    {
+        "account_name": "prodstorageacct001",
+        "resource_group": "rg-production",
+        "location": "eastus",
+        "sku": "Standard_LRS",
+        "kind": "StorageV2",
+        "access_tier": "Hot",
+        "https_only": true,
+        "blob_containers": 12,
+        "file_shares": 3,
+        "subscription": "Production",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "account_name": "backupstorage2024",
+        "resource_group": "rg-backup",
+        "location": "eastus",
+        "sku": "Standard_GRS",
+        "kind": "BlobStorage",
+        "access_tier": "Cool",
+        "https_only": true,
+        "blob_containers": 5,
+        "file_shares": 0,
+        "subscription": "Production",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "account_name": "stagingfiles",
+        "resource_group": "rg-staging",
+        "location": "westus2",
+        "sku": "Standard_LRS",
+        "kind": "StorageV2",
+        "access_tier": "Hot",
+        "https_only": true,
+        "blob_containers": 3,
+        "file_shares": 1,
+        "subscription": "Development",
+        "status": "active",
+        "discovery_date": "2025-01-08",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "account_name": "oldtempfiles",
+        "resource_group": "rg-temp",
+        "location": "eastus",
+        "sku": "Standard_LRS",
+        "kind": "Storage",
+        "access_tier": null,
+        "https_only": false,
+        "blob_containers": 0,
+        "file_shares": 0,
+        "subscription": "Development",
+        "status": "removed",
+        "discovery_date": "2024-01-01",
+        "last_seen": "2024-08-15"
+    }
+]

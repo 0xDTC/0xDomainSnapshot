@@ -1,0 +1,41 @@
+[
+  {
+    "certificate_arn": "arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012",
+    "domain_name": "*.example.com",
+    "subject_alternative_names": ["example.com", "*.example.com"],
+    "type": "AMAZON_ISSUED",
+    "issuer": "Amazon",
+    "validation_method": "DNS",
+    "cert_status": "ISSUED",
+    "not_after": "2026-01-15",
+    "in_use": true,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "certificate_arn": "arn:aws:acm:us-east-1:123456789012:certificate/87654321-4321-4321-4321-210987654321",
+    "domain_name": "api.example.com",
+    "subject_alternative_names": ["api.example.com"],
+    "type": "AMAZON_ISSUED",
+    "issuer": "Amazon",
+    "validation_method": "DNS",
+    "cert_status": "ISSUED",
+    "not_after": "2025-08-20",
+    "in_use": true,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "certificate_arn": "arn:aws:acm:us-west-2:123456789012:certificate/abcdef12-abcd-abcd-abcd-abcdef123456",
+    "domain_name": "old.example.com",
+    "subject_alternative_names": ["old.example.com"],
+    "type": "AMAZON_ISSUED",
+    "issuer": "Amazon",
+    "validation_method": "DNS",
+    "cert_status": "EXPIRED",
+    "not_after": "2024-06-01",
+    "in_use": false,
+    "region": "us-west-2",
+    "status": "removed"
+  }
+]

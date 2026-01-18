@@ -1,0 +1,35 @@
+[
+  {
+    "name": "prod-gke-cluster",
+    "project": "my-gcp-project",
+    "location": "us-central1",
+    "cluster_version": "1.28.3-gke.1200",
+    "node_count": 6,
+    "machine_type": "e2-standard-4",
+    "endpoint": "34.123.45.67",
+    "cluster_status": "RUNNING",
+    "status": "active"
+  },
+  {
+    "name": "staging-gke-cluster",
+    "project": "my-gcp-project",
+    "location": "us-east1",
+    "cluster_version": "1.27.8-gke.1500",
+    "node_count": 3,
+    "machine_type": "e2-standard-2",
+    "endpoint": "35.234.56.78",
+    "cluster_status": "RUNNING",
+    "status": "active"
+  },
+  {
+    "name": "dev-gke-old",
+    "project": "my-gcp-project",
+    "location": "us-west1",
+    "cluster_version": "1.25.12-gke.500",
+    "node_count": 0,
+    "machine_type": "e2-medium",
+    "endpoint": null,
+    "cluster_status": "STOPPING",
+    "status": "removed"
+  }
+]

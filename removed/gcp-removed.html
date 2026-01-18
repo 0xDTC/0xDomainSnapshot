@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCP Removed Assets - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+    <main>
+        <div class="page-header provider-gcp"><h1>GCP Removed Assets</h1><p>Historical record of all removed GCP resources</p></div>
+        <div class="stats-bar">
+            <div class="stat-card removed"><div class="stat-value" id="stat-total">-</div><div class="stat-label">Total Removed</div></div>
+        </div>
+        <div class="table-controls">
+            <div class="filter-controls">
+                <select id="serviceSelector" class="filter-select">
+                    <option value="all">All Services</option>
+                    <option value="compute">Compute Instances</option>
+                    <option value="gke">GKE Clusters</option>
+                    <option value="cloudrun">Cloud Run</option>
+                    <option value="functions">Cloud Functions</option>
+                    <option value="cloudsql">Cloud SQL</option>
+                    <option value="bigquery">BigQuery</option>
+                    <option value="bigtable">Bigtable</option>
+                    <option value="spanner">Spanner</option>
+                    <option value="memorystore">Memorystore</option>
+                    <option value="gcs">Cloud Storage</option>
+                    <option value="artifactregistry">Artifact Registry</option>
+                    <option value="iam">IAM Accounts</option>
+                    <option value="secretmanager">Secret Manager</option>
+                    <option value="loadbalancing">Load Balancing</option>
+                    <option value="pubsub">Pub/Sub</option>
+                    <option value="cloudtasks">Cloud Tasks</option>
+                    <option value="cloudscheduler">Cloud Scheduler</option>
+                    <option value="dataflow">Dataflow</option>
+                    <option value="dataproc">Dataproc</option>
+                    <option value="vertexai">Vertex AI</option>
+                    <option value="composer">Cloud Composer</option>
+                    <option value="cloudbuild">Cloud Build</option>
+                </select>
+                <div class="date-range-filter">
+                    <label>From:</label>
+                    <input type="date" id="dateFrom">
+                    <label>To:</label>
+                    <input type="date" id="dateTo">
+                    <button class="btn btn-secondary" id="clearDatesBtn">Clear</button>
+                </div>
+            </div>
+            <div class="search-box"><input type="text" id="globalSearch" placeholder="Search..."></div>
+            <button class="btn btn-secondary" id="exportBtn">Export CSV</button>
+        </div>
+        <div id="table-container"></div>
+    </main>
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const serviceConfigs = {
+            compute: { file: 'compute.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Machine Type', data: 'machine_type' },
+                { title: 'Zone', data: 'zone' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            gke: { file: 'gke.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Cluster Name', data: 'name' },
+                { title: 'Version', data: 'master_version' },
+                { title: 'Location', data: 'location' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            cloudrun: { file: 'cloudrun.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Service Name', data: 'name' },
+                { title: 'Region', data: 'region' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            functions: { file: 'functions.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Function Name', data: 'name' },
+                { title: 'Runtime', data: 'runtime' },
+                { title: 'Region', data: 'region' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            cloudsql: { file: 'cloudsql.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Instance Name', data: 'name' },
+                { title: 'Database Version', data: 'database_version' },
+                { title: 'Region', data: 'region' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            bigquery: { file: 'bigquery.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Dataset', data: 'dataset_id' },
+                { title: 'Location', data: 'location' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            bigtable: { file: 'bigtable.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Instance Name', data: 'name' },
+                { title: 'Cluster Count', data: 'cluster_count' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            spanner: { file: 'spanner.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Instance Name', data: 'name' },
+                { title: 'Config', data: 'config' },
+                { title: 'Node Count', data: 'node_count' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            memorystore: { file: 'memorystore.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Instance Name', data: 'name' },
+                { title: 'Tier', data: 'tier' },
+                { title: 'Region', data: 'region' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            gcs: { file: 'gcs.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Bucket Name', data: 'name' },
+                { title: 'Location', data: 'location' },
+                { title: 'Storage Class', data: 'storage_class' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            artifactregistry: { file: 'artifactregistry.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Repository', data: 'name' },
+                { title: 'Format', data: 'format' },
+                { title: 'Location', data: 'location' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            iam: { file: 'iam.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Email', data: 'email' },
+                { title: 'Display Name', data: 'display_name' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            secretmanager: { file: 'secretmanager.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Secret Name', data: 'name' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            loadbalancing: { file: 'loadbalancing.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Type', data: 'type' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            pubsub: { file: 'pubsub.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Topic Name', data: 'name' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            cloudtasks: { file: 'cloudtasks.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Queue Name', data: 'name' },
+                { title: 'Location', data: 'location' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            cloudscheduler: { file: 'cloudscheduler.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Job Name', data: 'name' },
+                { title: 'Schedule', data: 'schedule' },
+                { title: 'Location', data: 'location' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            dataflow: { file: 'dataflow.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Job Name', data: 'name' },
+                { title: 'Type', data: 'type' },
+                { title: 'Region', data: 'region' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            dataproc: { file: 'dataproc.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Cluster Name', data: 'name' },
+                { title: 'Region', data: 'region' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            vertexai: { file: 'vertexai.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Endpoint Name', data: 'name' },
+                { title: 'Region', data: 'region' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            composer: { file: 'composer.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Environment Name', data: 'name' },
+                { title: 'Region', data: 'region' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            cloudbuild: { file: 'cloudbuild.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Trigger Name', data: 'name' },
+                { title: 'Project', data: 'project' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]}
+        };
+
+        const allServicesColumns = [
+            { title: 'Account', data: 'account' },
+            { title: 'Service', data: 'service_type', render: (val) => `<span class="badge badge-info">${val}</span>` },
+            { title: 'Name', data: 'name' },
+            { title: 'Project', data: 'project' },
+            { title: 'Removed Date', data: 'removed_date' },
+            { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+        ];
+
+        let currentDt = null;
+
+        function filterByDateRange(data) {
+            const dateFrom = document.getElementById('dateFrom').value;
+            const dateTo = document.getElementById('dateTo').value;
+            if (!dateFrom && !dateTo) return data;
+            return data.filter(item => {
+                if (!item.removed_date || item.removed_date === 'N/A') return true;
+                const itemDate = new Date(item.removed_date);
+                if (isNaN(itemDate.getTime())) return true;
+                if (dateFrom && new Date(dateFrom) > itemDate) return false;
+                if (dateTo && new Date(dateTo) < itemDate) return false;
+                return true;
+            });
+        }
+
+        async function loadServiceData(serviceKey) {
+            if (currentDt) { currentDt.destroy(); currentDt = null; }
+            const searchInput = document.getElementById('globalSearch');
+            if (searchInput) searchInput.value = '';
+
+            const container = document.getElementById('table-container');
+            container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><span>Loading data...</span></div>';
+
+            if (serviceKey === 'all') {
+                let allData = [];
+                for (const [key, config] of Object.entries(serviceConfigs)) {
+                    try {
+                        const response = await fetch('../data/gcp/' + config.file);
+                        if (response.ok) {
+                            const data = await response.json();
+                            const removed = data.filter(item => item.status === 'removed');
+                            removed.forEach(item => {
+                                allData.push({
+                                    account: item.account || 'N/A',
+                                    service_type: key.toUpperCase(),
+                                    name: item.name || item.email || item.dataset_id || 'N/A',
+                                    project: item.project || 'N/A',
+                                    removed_date: item.removed_date || 'N/A',
+                                    status: item.status
+                                });
+                            });
+                        }
+                    } catch (e) {}
+                }
+
+                allData = filterByDateRange(allData);
+                document.getElementById('stat-total').textContent = allData.length;
+                container.innerHTML = '';
+                currentDt = new DataTable('table-container', { data: allData, columns: allServicesColumns, rowClass: () => 'removed' });
+            } else {
+                const config = serviceConfigs[serviceKey];
+                try {
+                    const response = await fetch('../data/gcp/' + config.file);
+                    if (response.ok) {
+                        const data = await response.json();
+                        let removed = data.filter(item => item.status === 'removed');
+                        removed = filterByDateRange(removed);
+
+                        document.getElementById('stat-total').textContent = removed.length;
+                        container.innerHTML = '';
+                        currentDt = new DataTable('table-container', { data: removed, columns: config.columns, rowClass: () => 'removed' });
+                    } else {
+                        container.innerHTML = '<div class="empty-state"><div class="empty-state-title">No data available</div></div>';
+                        document.getElementById('stat-total').textContent = '0';
+                    }
+                } catch (e) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-state-title">Failed to load data</div></div>';
+                    document.getElementById('stat-total').textContent = '0';
+                }
+            }
+        }
+
+        document.getElementById('serviceSelector').addEventListener('change', (e) => {
+            const service = e.target.value;
+            const url = new URL(window.location);
+            ['page', 'sortCol', 'sortDir', 'search', 'rows'].forEach(p => url.searchParams.delete(p));
+            url.searchParams.forEach((value, key) => {
+                if (key.startsWith('filter_')) url.searchParams.delete(key);
+            });
+            if (service === 'all') {
+                url.searchParams.delete('service');
+            } else {
+                url.searchParams.set('service', service);
+            }
+            window.history.replaceState({}, '', url);
+            loadServiceData(service);
+        });
+
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            if (currentDt) {
+                const service = document.getElementById('serviceSelector').value;
+                currentDt.exportCSV(`gcp-${service}-removed.csv`);
+            }
+        });
+
+        document.getElementById('dateFrom').addEventListener('change', () => loadServiceData(document.getElementById('serviceSelector').value));
+        document.getElementById('dateTo').addEventListener('change', () => loadServiceData(document.getElementById('serviceSelector').value));
+        document.getElementById('clearDatesBtn').addEventListener('click', () => {
+            document.getElementById('dateFrom').value = '';
+            document.getElementById('dateTo').value = '';
+            loadServiceData(document.getElementById('serviceSelector').value);
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialService = urlParams.get('service') || 'all';
+        document.getElementById('serviceSelector').value = initialService;
+        loadServiceData(initialService);
+    </script>
+</body>
+</html>

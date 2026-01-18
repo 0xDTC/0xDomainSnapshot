@@ -1,0 +1,35 @@
+[
+  {
+    "cluster_id": "prod-redis-cluster",
+    "engine": "redis",
+    "engine_version": "7.0.7",
+    "node_type": "cache.r6g.large",
+    "num_nodes": 3,
+    "endpoint": "prod-redis-cluster.abc123.0001.use1.cache.amazonaws.com",
+    "port": 6379,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "cluster_id": "session-cache",
+    "engine": "redis",
+    "engine_version": "6.2.6",
+    "node_type": "cache.t3.medium",
+    "num_nodes": 2,
+    "endpoint": "session-cache.def456.0001.use1.cache.amazonaws.com",
+    "port": 6379,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "cluster_id": "old-memcached",
+    "engine": "memcached",
+    "engine_version": "1.6.6",
+    "node_type": "cache.t2.small",
+    "num_nodes": 1,
+    "endpoint": "old-memcached.ghi789.0001.usw2.cache.amazonaws.com",
+    "port": 11211,
+    "region": "us-west-2",
+    "status": "removed"
+  }
+]

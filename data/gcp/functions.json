@@ -1,0 +1,38 @@
+[
+  {
+    "name": "process-orders",
+    "project": "my-gcp-project",
+    "region": "us-central1",
+    "runtime": "nodejs20",
+    "trigger_type": "HTTP",
+    "url": "https://us-central1-my-gcp-project.cloudfunctions.net/process-orders",
+    "memory": 512,
+    "timeout": 60,
+    "state": "ACTIVE",
+    "status": "active"
+  },
+  {
+    "name": "resize-images",
+    "project": "my-gcp-project",
+    "region": "us-central1",
+    "runtime": "python311",
+    "trigger_type": "Cloud Storage",
+    "url": null,
+    "memory": 1024,
+    "timeout": 120,
+    "state": "ACTIVE",
+    "status": "active"
+  },
+  {
+    "name": "send-notifications",
+    "project": "my-gcp-project",
+    "region": "us-central1",
+    "runtime": "go121",
+    "trigger_type": "Pub/Sub",
+    "url": null,
+    "memory": 256,
+    "timeout": 30,
+    "state": "ACTIVE",
+    "status": "active"
+  }
+]

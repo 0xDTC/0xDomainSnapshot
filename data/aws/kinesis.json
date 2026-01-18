@@ -1,0 +1,22 @@
+[
+  {
+    "stream_name": "clickstream-events",
+    "stream_arn": "arn:aws:kinesis:us-east-1:123456789012:stream/clickstream-events",
+    "stream_status": "ACTIVE",
+    "shard_count": 4,
+    "retention_period_hours": 168,
+    "encryption_type": "KMS",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "stream_name": "logs-aggregation",
+    "stream_arn": "arn:aws:kinesis:us-east-1:123456789012:stream/logs-aggregation",
+    "stream_status": "ACTIVE",
+    "shard_count": 2,
+    "retention_period_hours": 24,
+    "encryption_type": "NONE",
+    "region": "us-east-1",
+    "status": "active"
+  }
+]

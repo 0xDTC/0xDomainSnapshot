@@ -1,0 +1,151 @@
+{
+    "services": {
+        "domains": {
+            "name": "Domains",
+            "provider": "GoDaddy/Cloudflare",
+            "schedule": "weekly",
+            "last_updated": "2026-01-10T08:00:00Z"
+        },
+        "subdomains": {
+            "name": "Subdomains",
+            "provider": "DNS",
+            "schedule": "daily",
+            "last_updated": "2026-01-17T06:00:00Z"
+        },
+        "aws": {
+            "name": "AWS",
+            "provider": "Amazon Web Services",
+            "schedule": "daily",
+            "last_updated": "2026-01-17T04:00:00Z",
+            "services": {
+                "ec2": { "last_updated": "2026-01-17T04:00:00Z" },
+                "eks": { "last_updated": "2026-01-17T04:05:00Z" },
+                "ecs": { "last_updated": "2026-01-17T04:10:00Z" },
+                "lambda": { "last_updated": "2026-01-17T04:15:00Z" },
+                "rds": { "last_updated": "2026-01-17T04:20:00Z" },
+                "dynamodb": { "last_updated": "2026-01-17T04:25:00Z" },
+                "elasticache": { "last_updated": "2026-01-17T04:30:00Z" },
+                "redshift": { "last_updated": "2026-01-17T04:35:00Z" },
+                "opensearch": { "last_updated": "2026-01-17T04:40:00Z" },
+                "s3": { "last_updated": "2026-01-17T04:45:00Z" },
+                "ecr": { "last_updated": "2026-01-17T04:50:00Z" },
+                "iam": { "last_updated": "2026-01-17T04:55:00Z" },
+                "cognito": { "last_updated": "2026-01-17T05:00:00Z" },
+                "secrets": { "last_updated": "2026-01-17T05:05:00Z" },
+                "kms": { "last_updated": "2026-01-17T05:10:00Z" },
+                "vpc": { "last_updated": "2026-01-17T05:15:00Z" },
+                "elb": { "last_updated": "2026-01-17T05:20:00Z" },
+                "cloudfront": { "last_updated": "2026-01-17T05:25:00Z" },
+                "apigateway": { "last_updated": "2026-01-17T05:30:00Z" },
+                "sqs": { "last_updated": "2026-01-17T05:35:00Z" },
+                "sns": { "last_updated": "2026-01-17T05:40:00Z" },
+                "eventbridge": { "last_updated": "2026-01-17T05:45:00Z" },
+                "kinesis": { "last_updated": "2026-01-17T05:50:00Z" },
+                "msk": { "last_updated": "2026-01-17T05:55:00Z" },
+                "mq": { "last_updated": "2026-01-17T06:00:00Z" },
+                "stepfunctions": { "last_updated": "2026-01-17T06:05:00Z" },
+                "cloudwatch": { "last_updated": "2026-01-17T06:10:00Z" },
+                "waf": { "last_updated": "2026-01-17T06:15:00Z" },
+                "acm": { "last_updated": "2026-01-17T06:20:00Z" }
+            }
+        },
+        "azure": {
+            "name": "Azure",
+            "provider": "Microsoft Azure",
+            "schedule": "daily",
+            "last_updated": "2026-01-17T05:00:00Z",
+            "services": {
+                "vms": { "last_updated": "2026-01-17T05:00:00Z" },
+                "aks": { "last_updated": "2026-01-17T05:05:00Z" },
+                "appservice": { "last_updated": "2026-01-17T05:10:00Z" },
+                "functions": { "last_updated": "2026-01-17T05:15:00Z" },
+                "sql": { "last_updated": "2026-01-17T05:20:00Z" },
+                "cosmosdb": { "last_updated": "2026-01-17T05:25:00Z" },
+                "redis": { "last_updated": "2026-01-17T05:30:00Z" },
+                "storage": { "last_updated": "2026-01-17T05:35:00Z" },
+                "containerregistry": { "last_updated": "2026-01-17T05:40:00Z" },
+                "ad_users": { "last_updated": "2026-01-17T05:45:00Z" },
+                "keyvault": { "last_updated": "2026-01-17T05:50:00Z" },
+                "cdn": { "last_updated": "2026-01-17T05:55:00Z" },
+                "servicebus": { "last_updated": "2026-01-17T06:00:00Z" },
+                "eventhub": { "last_updated": "2026-01-17T06:05:00Z" }
+            }
+        },
+        "gcp": {
+            "name": "GCP",
+            "provider": "Google Cloud Platform",
+            "schedule": "daily",
+            "last_updated": "2026-01-17T03:00:00Z",
+            "services": {
+                "compute": { "last_updated": "2026-01-17T03:00:00Z" },
+                "gke": { "last_updated": "2026-01-17T03:05:00Z" },
+                "cloudrun": { "last_updated": "2026-01-17T03:10:00Z" },
+                "functions": { "last_updated": "2026-01-17T03:15:00Z" },
+                "cloudsql": { "last_updated": "2026-01-17T03:20:00Z" },
+                "bigquery": { "last_updated": "2026-01-17T03:25:00Z" },
+                "bigtable": { "last_updated": "2026-01-17T03:30:00Z" },
+                "spanner": { "last_updated": "2026-01-17T03:35:00Z" },
+                "memorystore": { "last_updated": "2026-01-17T03:40:00Z" },
+                "gcs": { "last_updated": "2026-01-17T03:45:00Z" },
+                "iam": { "last_updated": "2026-01-17T03:50:00Z" },
+                "secretmanager": { "last_updated": "2026-01-17T03:55:00Z" },
+                "loadbalancing": { "last_updated": "2026-01-17T04:00:00Z" },
+                "pubsub": { "last_updated": "2026-01-17T04:05:00Z" }
+            }
+        },
+        "cloudflare": {
+            "name": "Cloudflare",
+            "provider": "Cloudflare",
+            "schedule": "daily",
+            "last_updated": "2026-01-17T02:00:00Z",
+            "services": {
+                "workers": { "last_updated": "2026-01-17T02:00:00Z" },
+                "pages": { "last_updated": "2026-01-17T02:05:00Z" },
+                "r2": { "last_updated": "2026-01-17T02:10:00Z" },
+                "kv": { "last_updated": "2026-01-17T02:15:00Z" },
+                "d1": { "last_updated": "2026-01-17T02:20:00Z" },
+                "queues": { "last_updated": "2026-01-17T02:25:00Z" },
+                "durable-objects": { "last_updated": "2026-01-17T02:30:00Z" },
+                "tunnels": { "last_updated": "2026-01-17T02:35:00Z" },
+                "access": { "last_updated": "2026-01-17T02:40:00Z" }
+            }
+        },
+        "digitalocean": {
+            "name": "DigitalOcean",
+            "provider": "DigitalOcean",
+            "schedule": "daily",
+            "last_updated": "2026-01-17T01:00:00Z",
+            "services": {
+                "droplets": { "last_updated": "2026-01-17T01:00:00Z" },
+                "kubernetes": { "last_updated": "2026-01-17T01:05:00Z" },
+                "apps": { "last_updated": "2026-01-17T01:10:00Z" },
+                "databases": { "last_updated": "2026-01-17T01:15:00Z" },
+                "spaces": { "last_updated": "2026-01-17T01:20:00Z" }
+            }
+        },
+        "oracle": {
+            "name": "Oracle Cloud",
+            "provider": "Oracle Cloud Infrastructure",
+            "schedule": "daily",
+            "last_updated": "2026-01-17T00:00:00Z",
+            "services": {
+                "compute": { "last_updated": "2026-01-17T00:00:00Z" },
+                "oke": { "last_updated": "2026-01-17T00:05:00Z" },
+                "database": { "last_updated": "2026-01-17T00:10:00Z" },
+                "objectstorage": { "last_updated": "2026-01-17T00:15:00Z" }
+            }
+        },
+        "alibaba": {
+            "name": "Alibaba Cloud",
+            "provider": "Alibaba Cloud",
+            "schedule": "weekly",
+            "last_updated": "2026-01-12T00:00:00Z",
+            "services": {
+                "ecs": { "last_updated": "2026-01-12T00:00:00Z" },
+                "ack": { "last_updated": "2026-01-12T00:05:00Z" },
+                "rds": { "last_updated": "2026-01-12T00:10:00Z" },
+                "oss": { "last_updated": "2026-01-12T00:15:00Z" }
+            }
+        }
+    }
+}

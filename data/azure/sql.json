@@ -1,0 +1,62 @@
+[
+    {
+        "server_name": "prod-sql-server",
+        "database_name": "ProductionDB",
+        "resource_group": "rg-production",
+        "location": "eastus",
+        "edition": "Premium",
+        "service_tier": "P2",
+        "max_size_gb": 500,
+        "collation": "SQL_Latin1_General_CP1_CI_AS",
+        "fqdn": "prod-sql-server.database.windows.net",
+        "subscription": "Production",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "server_name": "prod-sql-server",
+        "database_name": "AnalyticsDB",
+        "resource_group": "rg-production",
+        "location": "eastus",
+        "edition": "Standard",
+        "service_tier": "S3",
+        "max_size_gb": 250,
+        "collation": "SQL_Latin1_General_CP1_CI_AS",
+        "fqdn": "prod-sql-server.database.windows.net",
+        "subscription": "Production",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "server_name": "staging-sql",
+        "database_name": "StagingDB",
+        "resource_group": "rg-staging",
+        "location": "westus2",
+        "edition": "Basic",
+        "service_tier": "Basic",
+        "max_size_gb": 2,
+        "collation": "SQL_Latin1_General_CP1_CI_AS",
+        "fqdn": "staging-sql.database.windows.net",
+        "subscription": "Development",
+        "status": "active",
+        "discovery_date": "2025-01-08",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "server_name": "old-sql-server",
+        "database_name": "LegacyDB",
+        "resource_group": "rg-legacy",
+        "location": "eastus",
+        "edition": "Basic",
+        "service_tier": "Basic",
+        "max_size_gb": 2,
+        "collation": "SQL_Latin1_General_CP1_CI_AS",
+        "fqdn": null,
+        "subscription": "Production",
+        "status": "removed",
+        "discovery_date": "2024-01-01",
+        "last_seen": "2024-07-30"
+    }
+]

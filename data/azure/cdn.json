@@ -1,0 +1,20 @@
+[
+  {
+    "name": "prod-cdn-profile",
+    "resource_group": "rg-prod-cdn",
+    "location": "global",
+    "sku": "Standard_Microsoft",
+    "endpoints_count": 3,
+    "provisioning_state": "Succeeded",
+    "status": "active"
+  },
+  {
+    "name": "media-cdn-profile",
+    "resource_group": "rg-media",
+    "location": "global",
+    "sku": "Premium_Verizon",
+    "endpoints_count": 2,
+    "provisioning_state": "Succeeded",
+    "status": "active"
+  }
+]

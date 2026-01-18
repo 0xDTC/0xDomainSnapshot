@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0xDomainSnapshot - Dashboard</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+        .dashboard-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .summary-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .summary-card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .summary-card .label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        .summary-card.danger .value { color: var(--danger); }
+        .summary-card.success .value { color: var(--success); }
+    </style>
+</head>
+<body>
+    <script src="static/js/nav.js"></script>
+
+    <main>
+        <div class="page-header">
+            <h1>Cloud Asset Inventory Dashboard</h1>
+            <p>Centralized view of all cloud assets across AWS, Azure, GCP, and more</p>
+        </div>
+
+        <div class="dashboard-summary">
+            <div class="summary-card">
+                <div class="value" id="total-assets">-</div>
+                <div class="label">Total Assets</div>
+            </div>
+            <div class="summary-card success">
+                <div class="value" id="active-assets">-</div>
+                <div class="label">Active</div>
+            </div>
+            <div class="summary-card danger">
+                <div class="value" id="removed-assets">-</div>
+                <div class="label">Removed</div>
+            </div>
+        </div>
+
+        <!-- Service Update Status -->
+        <div class="category-section">
+            <h2 class="category-title">Service Update Status</h2>
+            <div class="update-status-grid" id="update-status-grid">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- DNS Section -->
+        <div class="category-section provider-domains">
+            <h2 class="category-title">Domains & DNS</h2>
+            <div class="dashboard-grid">
+                <a href="dns/domains.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Domains</span>
+                        <span class="dashboard-card-icon">D</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat">
+                            <span class="value" id="domains-total">-</span>
+                            <span class="label"> total</span>
+                        </div>
+                        <div class="dashboard-card-stat">
+                            <span class="value" id="domains-active">-</span>
+                            <span class="label"> active</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="dns/subdomains.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Subdomains</span>
+                        <span class="dashboard-card-icon">S</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat">
+                            <span class="value" id="subdomains-total">-</span>
+                            <span class="label"> total</span>
+                        </div>
+                        <div class="dashboard-card-stat">
+                            <span class="value" id="subdomains-active">-</span>
+                            <span class="label"> active</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- AWS Section -->
+        <div class="category-section provider-aws">
+            <h2 class="category-title">Amazon Web Services (AWS)</h2>
+            <div class="dashboard-grid">
+                <a href="aws/ec2.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">EC2 Instances</span>
+                        <span class="dashboard-card-icon provider-aws">EC2</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="ec2-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="ec2-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/eks.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">EKS Clusters</span>
+                        <span class="dashboard-card-icon provider-aws">EKS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="eks-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="eks-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/ecs.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">ECS Clusters</span>
+                        <span class="dashboard-card-icon provider-aws">ECS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="ecs-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="ecs-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/lambda.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Lambda Functions</span>
+                        <span class="dashboard-card-icon provider-aws">L</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="lambda-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="lambda-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/rds.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">RDS Databases</span>
+                        <span class="dashboard-card-icon provider-aws">RDS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="rds-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="rds-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/dynamodb.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">DynamoDB Tables</span>
+                        <span class="dashboard-card-icon provider-aws">DDB</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="dynamodb-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="dynamodb-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/elasticache.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">ElastiCache</span>
+                        <span class="dashboard-card-icon provider-aws">EC</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="elasticache-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="elasticache-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/redshift.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Redshift</span>
+                        <span class="dashboard-card-icon provider-aws">RS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="redshift-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="redshift-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/opensearch.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">OpenSearch</span>
+                        <span class="dashboard-card-icon provider-aws">OS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="opensearch-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="opensearch-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/s3.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">S3 Buckets</span>
+                        <span class="dashboard-card-icon provider-aws">S3</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="s3-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="s3-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/ecr.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">ECR Repositories</span>
+                        <span class="dashboard-card-icon provider-aws">ECR</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="ecr-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="ecr-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/iam.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">IAM Users</span>
+                        <span class="dashboard-card-icon provider-aws">IAM</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="iam-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="iam-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/cognito.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Cognito Pools</span>
+                        <span class="dashboard-card-icon provider-aws">COG</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="cognito-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="cognito-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/secrets.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Secrets Manager</span>
+                        <span class="dashboard-card-icon provider-aws">SM</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="secrets-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="secrets-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/kms.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">KMS Keys</span>
+                        <span class="dashboard-card-icon provider-aws">KMS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="kms-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="kms-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/vpc.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">VPCs</span>
+                        <span class="dashboard-card-icon provider-aws">VPC</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="vpc-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="vpc-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/elb.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Load Balancers</span>
+                        <span class="dashboard-card-icon provider-aws">ELB</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="elb-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="elb-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/cloudfront.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">CloudFront</span>
+                        <span class="dashboard-card-icon provider-aws">CF</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="cloudfront-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="cloudfront-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/apigateway.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">API Gateway</span>
+                        <span class="dashboard-card-icon provider-aws">API</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="apigateway-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="apigateway-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/sqs.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">SQS Queues</span>
+                        <span class="dashboard-card-icon provider-aws">SQS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="sqs-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="sqs-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/sns.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">SNS Topics</span>
+                        <span class="dashboard-card-icon provider-aws">SNS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="sns-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="sns-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/eventbridge.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">EventBridge</span>
+                        <span class="dashboard-card-icon provider-aws">EB</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="eventbridge-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="eventbridge-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/kinesis.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Kinesis Streams</span>
+                        <span class="dashboard-card-icon provider-aws">KIN</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="kinesis-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="kinesis-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/msk.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">MSK Clusters</span>
+                        <span class="dashboard-card-icon provider-aws">MSK</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="msk-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="msk-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/mq.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Amazon MQ</span>
+                        <span class="dashboard-card-icon provider-aws">MQ</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="mq-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="mq-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/stepfunctions.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Step Functions</span>
+                        <span class="dashboard-card-icon provider-aws">SF</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="stepfunctions-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="stepfunctions-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/cloudwatch.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">CloudWatch Alarms</span>
+                        <span class="dashboard-card-icon provider-aws">CW</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="cloudwatch-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="cloudwatch-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/waf.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">WAF Rules</span>
+                        <span class="dashboard-card-icon provider-aws">WAF</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="waf-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="waf-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="aws/acm.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">ACM Certificates</span>
+                        <span class="dashboard-card-icon provider-aws">ACM</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="acm-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="acm-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Azure Section -->
+        <div class="category-section provider-azure">
+            <h2 class="category-title">Microsoft Azure</h2>
+            <div class="dashboard-grid">
+                <a href="azure/vms.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Virtual Machines</span>
+                        <span class="dashboard-card-icon provider-azure">VM</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-vms-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-vms-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="azure/aks.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">AKS Clusters</span>
+                        <span class="dashboard-card-icon provider-azure">AKS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-aks-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-aks-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="azure/appservice.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">App Service</span>
+                        <span class="dashboard-card-icon provider-azure">APP</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-appservice-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-appservice-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="azure/functions.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Functions</span>
+                        <span class="dashboard-card-icon provider-azure">FN</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-functions-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-functions-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="azure/sql.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">SQL Databases</span>
+                        <span class="dashboard-card-icon provider-azure">SQL</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-sql-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-sql-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="azure/cosmosdb.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Cosmos DB</span>
+                        <span class="dashboard-card-icon provider-azure">COS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-cosmosdb-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-cosmosdb-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="azure/redis.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Redis Cache</span>
+                        <span class="dashboard-card-icon provider-azure">RED</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-redis-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-redis-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="azure/storage.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Storage Accounts</span>
+                        <span class="dashboard-card-icon provider-azure">ST</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-storage-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-storage-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="azure/containerregistry.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Container Registry</span>
+                        <span class="dashboard-card-icon provider-azure">ACR</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-containerregistry-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-containerregistry-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="azure/ad-users.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">AD Users</span>
+                        <span class="dashboard-card-icon provider-azure">AD</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-ad-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-ad-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="azure/keyvault.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Key Vault</span>
+                        <span class="dashboard-card-icon provider-azure">KV</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-keyvault-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-keyvault-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="azure/cdn.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">CDN Profiles</span>
+                        <span class="dashboard-card-icon provider-azure">CDN</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-cdn-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-cdn-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="azure/servicebus.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Service Bus</span>
+                        <span class="dashboard-card-icon provider-azure">SB</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-servicebus-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-servicebus-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="azure/eventhub.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Event Hubs</span>
+                        <span class="dashboard-card-icon provider-azure">EH</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="azure-eventhub-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="azure-eventhub-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- GCP Section -->
+        <div class="category-section provider-gcp">
+            <h2 class="category-title">Google Cloud Platform (GCP)</h2>
+            <div class="dashboard-grid">
+                <a href="gcp/compute.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Compute Instances</span>
+                        <span class="dashboard-card-icon provider-gcp">GCE</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-compute-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-compute-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="gcp/gke.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">GKE Clusters</span>
+                        <span class="dashboard-card-icon provider-gcp">GKE</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-gke-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-gke-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="gcp/cloudrun.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Cloud Run</span>
+                        <span class="dashboard-card-icon provider-gcp">RUN</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-cloudrun-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-cloudrun-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="gcp/functions.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Cloud Functions</span>
+                        <span class="dashboard-card-icon provider-gcp">FN</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-functions-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-functions-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="gcp/cloudsql.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Cloud SQL</span>
+                        <span class="dashboard-card-icon provider-gcp">SQL</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-sql-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-sql-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="gcp/bigquery.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">BigQuery</span>
+                        <span class="dashboard-card-icon provider-gcp">BQ</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-bigquery-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-bigquery-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="gcp/bigtable.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Bigtable</span>
+                        <span class="dashboard-card-icon provider-gcp">BT</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-bigtable-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-bigtable-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="gcp/spanner.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Spanner</span>
+                        <span class="dashboard-card-icon provider-gcp">SPN</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-spanner-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-spanner-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="gcp/memorystore.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Memorystore</span>
+                        <span class="dashboard-card-icon provider-gcp">MEM</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-memorystore-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-memorystore-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="gcp/gcs.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Cloud Storage</span>
+                        <span class="dashboard-card-icon provider-gcp">GCS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-gcs-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-gcs-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="gcp/iam.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">IAM Accounts</span>
+                        <span class="dashboard-card-icon provider-gcp">IAM</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-iam-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-iam-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="gcp/secretmanager.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Secret Manager</span>
+                        <span class="dashboard-card-icon provider-gcp">SEC</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-secretmanager-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-secretmanager-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="gcp/loadbalancing.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Load Balancing</span>
+                        <span class="dashboard-card-icon provider-gcp">LB</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-loadbalancing-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-loadbalancing-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="gcp/pubsub.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Pub/Sub</span>
+                        <span class="dashboard-card-icon provider-gcp">PUB</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-pubsub-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="gcp-pubsub-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Cloudflare Section -->
+        <div class="category-section provider-cloudflare">
+            <h2 class="category-title">Cloudflare</h2>
+            <div class="dashboard-grid">
+                <a href="cloudflare/workers.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Workers</span>
+                        <span class="dashboard-card-icon provider-cloudflare">W</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="cf-workers-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="cf-workers-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="cloudflare/pages.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Pages</span>
+                        <span class="dashboard-card-icon provider-cloudflare">P</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="cf-pages-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="cf-pages-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="cloudflare/r2.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">R2 Storage</span>
+                        <span class="dashboard-card-icon provider-cloudflare">R2</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="cf-r2-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="cf-r2-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="cloudflare/kv.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">KV Namespaces</span>
+                        <span class="dashboard-card-icon provider-cloudflare">KV</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="cf-kv-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="cf-kv-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="cloudflare/d1.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">D1 Databases</span>
+                        <span class="dashboard-card-icon provider-cloudflare">D1</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="cf-d1-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="cf-d1-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="cloudflare/queues.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Queues</span>
+                        <span class="dashboard-card-icon provider-cloudflare">Q</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="cf-queues-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="cf-queues-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="cloudflare/durable-objects.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Durable Objects</span>
+                        <span class="dashboard-card-icon provider-cloudflare">DO</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="cf-do-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="cf-do-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="cloudflare/tunnels.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Tunnels</span>
+                        <span class="dashboard-card-icon provider-cloudflare">T</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="cf-tunnels-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="cf-tunnels-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="cloudflare/access.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Access Apps</span>
+                        <span class="dashboard-card-icon provider-cloudflare">A</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="cf-access-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="cf-access-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- DigitalOcean Section -->
+        <div class="category-section provider-digitalocean">
+            <h2 class="category-title">DigitalOcean</h2>
+            <div class="dashboard-grid">
+                <a href="digitalocean/droplets.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Droplets</span>
+                        <span class="dashboard-card-icon provider-do">DRP</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="do-droplets-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="do-droplets-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="digitalocean/kubernetes.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Kubernetes</span>
+                        <span class="dashboard-card-icon provider-do">K8S</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="do-kubernetes-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="do-kubernetes-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="digitalocean/apps.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">App Platform</span>
+                        <span class="dashboard-card-icon provider-do">APP</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="do-apps-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="do-apps-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="digitalocean/databases.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Databases</span>
+                        <span class="dashboard-card-icon provider-do">DB</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="do-databases-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="do-databases-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="digitalocean/spaces.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Spaces</span>
+                        <span class="dashboard-card-icon provider-do">SPC</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="do-spaces-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="do-spaces-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Oracle Cloud Section -->
+        <div class="category-section provider-oracle">
+            <h2 class="category-title">Oracle Cloud Infrastructure (OCI)</h2>
+            <div class="dashboard-grid">
+                <a href="oracle/compute.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Compute Instances</span>
+                        <span class="dashboard-card-icon provider-oracle">OCI</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="oci-compute-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="oci-compute-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="oracle/oke.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">OKE Clusters</span>
+                        <span class="dashboard-card-icon provider-oracle">OKE</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="oci-oke-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="oci-oke-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="oracle/database.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Databases</span>
+                        <span class="dashboard-card-icon provider-oracle">DB</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="oci-database-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="oci-database-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="oracle/objectstorage.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">Object Storage</span>
+                        <span class="dashboard-card-icon provider-oracle">OBJ</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="oci-objectstorage-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="oci-objectstorage-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Alibaba Cloud Section -->
+        <div class="category-section provider-alibaba">
+            <h2 class="category-title">Alibaba Cloud</h2>
+            <div class="dashboard-grid">
+                <a href="alibaba/ecs.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">ECS Instances</span>
+                        <span class="dashboard-card-icon provider-alibaba">ECS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="alibaba-ecs-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="alibaba-ecs-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="alibaba/ack.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">ACK Clusters</span>
+                        <span class="dashboard-card-icon provider-alibaba">ACK</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="alibaba-ack-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="alibaba-ack-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="alibaba/rds.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">RDS Databases</span>
+                        <span class="dashboard-card-icon provider-alibaba">RDS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="alibaba-rds-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="alibaba-rds-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+                <a href="alibaba/oss.html" class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <span class="dashboard-card-title">OSS Buckets</span>
+                        <span class="dashboard-card-icon provider-alibaba">OSS</span>
+                    </div>
+                    <div class="dashboard-card-stats">
+                        <div class="dashboard-card-stat"><span class="value" id="alibaba-oss-total">-</span><span class="label"> total</span></div>
+                        <div class="dashboard-card-stat"><span class="value" id="alibaba-oss-active">-</span><span class="label"> active</span></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Data sources configuration
+        const dataSources = {
+            // Domains
+            'domains': 'data/domains.json',
+            'subdomains': 'data/subdomains.json',
+            // AWS
+            'ec2': 'data/aws/ec2.json',
+            'eks': 'data/aws/eks.json',
+            'ecs': 'data/aws/ecs.json',
+            'lambda': 'data/aws/lambda.json',
+            'rds': 'data/aws/rds.json',
+            'dynamodb': 'data/aws/dynamodb.json',
+            'elasticache': 'data/aws/elasticache.json',
+            'redshift': 'data/aws/redshift.json',
+            'opensearch': 'data/aws/opensearch.json',
+            's3': 'data/aws/s3.json',
+            'ecr': 'data/aws/ecr.json',
+            'iam': 'data/aws/iam.json',
+            'cognito': 'data/aws/cognito.json',
+            'secrets': 'data/aws/secrets.json',
+            'kms': 'data/aws/kms.json',
+            'vpc': 'data/aws/vpc.json',
+            'elb': 'data/aws/elb.json',
+            'cloudfront': 'data/aws/cloudfront.json',
+            'apigateway': 'data/aws/apigateway.json',
+            'sqs': 'data/aws/sqs.json',
+            'sns': 'data/aws/sns.json',
+            'eventbridge': 'data/aws/eventbridge.json',
+            'kinesis': 'data/aws/kinesis.json',
+            'msk': 'data/aws/msk.json',
+            'mq': 'data/aws/mq.json',
+            'stepfunctions': 'data/aws/stepfunctions.json',
+            'cloudwatch': 'data/aws/cloudwatch.json',
+            'waf': 'data/aws/waf.json',
+            'acm': 'data/aws/acm.json',
+            // Azure
+            'azure-vms': 'data/azure/vms.json',
+            'azure-aks': 'data/azure/aks.json',
+            'azure-appservice': 'data/azure/appservice.json',
+            'azure-functions': 'data/azure/functions.json',
+            'azure-sql': 'data/azure/sql.json',
+            'azure-cosmosdb': 'data/azure/cosmosdb.json',
+            'azure-redis': 'data/azure/redis.json',
+            'azure-storage': 'data/azure/storage.json',
+            'azure-containerregistry': 'data/azure/containerregistry.json',
+            'azure-ad': 'data/azure/ad_users.json',
+            'azure-keyvault': 'data/azure/keyvault.json',
+            'azure-cdn': 'data/azure/cdn.json',
+            'azure-servicebus': 'data/azure/servicebus.json',
+            'azure-eventhub': 'data/azure/eventhub.json',
+            // GCP
+            'gcp-compute': 'data/gcp/compute.json',
+            'gcp-gke': 'data/gcp/gke.json',
+            'gcp-cloudrun': 'data/gcp/cloudrun.json',
+            'gcp-functions': 'data/gcp/functions.json',
+            'gcp-sql': 'data/gcp/cloudsql.json',
+            'gcp-bigquery': 'data/gcp/bigquery.json',
+            'gcp-bigtable': 'data/gcp/bigtable.json',
+            'gcp-spanner': 'data/gcp/spanner.json',
+            'gcp-memorystore': 'data/gcp/memorystore.json',
+            'gcp-gcs': 'data/gcp/gcs.json',
+            'gcp-iam': 'data/gcp/iam.json',
+            'gcp-secretmanager': 'data/gcp/secretmanager.json',
+            'gcp-loadbalancing': 'data/gcp/loadbalancing.json',
+            'gcp-pubsub': 'data/gcp/pubsub.json',
+            // Cloudflare
+            'cf-workers': 'data/cloudflare/workers.json',
+            'cf-pages': 'data/cloudflare/pages.json',
+            'cf-r2': 'data/cloudflare/r2.json',
+            'cf-kv': 'data/cloudflare/kv.json',
+            'cf-d1': 'data/cloudflare/d1.json',
+            'cf-queues': 'data/cloudflare/queues.json',
+            'cf-do': 'data/cloudflare/durable-objects.json',
+            'cf-tunnels': 'data/cloudflare/tunnels.json',
+            'cf-access': 'data/cloudflare/access.json',
+            // DigitalOcean
+            'do-droplets': 'data/digitalocean/droplets.json',
+            'do-kubernetes': 'data/digitalocean/kubernetes.json',
+            'do-apps': 'data/digitalocean/apps.json',
+            'do-databases': 'data/digitalocean/databases.json',
+            'do-spaces': 'data/digitalocean/spaces.json',
+            // Oracle Cloud
+            'oci-compute': 'data/oracle/compute.json',
+            'oci-oke': 'data/oracle/oke.json',
+            'oci-database': 'data/oracle/database.json',
+            'oci-objectstorage': 'data/oracle/objectstorage.json',
+            // Alibaba Cloud
+            'alibaba-ecs': 'data/alibaba/ecs.json',
+            'alibaba-ack': 'data/alibaba/ack.json',
+            'alibaba-rds': 'data/alibaba/rds.json',
+            'alibaba-oss': 'data/alibaba/oss.json'
+        };
+
+        let totalAssets = 0;
+        let activeAssets = 0;
+        let removedAssets = 0;
+
+        async function loadStats() {
+            for (const [key, url] of Object.entries(dataSources)) {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) continue;
+                    const data = await response.json();
+
+                    const total = data.length;
+                    const active = data.filter(d => d.status === 'active').length;
+
+                    totalAssets += total;
+                    activeAssets += active;
+                    removedAssets += (total - active);
+
+                    const totalEl = document.getElementById(`${key}-total`);
+                    const activeEl = document.getElementById(`${key}-active`);
+                    if (totalEl) totalEl.textContent = total;
+                    if (activeEl) activeEl.textContent = active;
+                } catch (e) {
+                    // Data file doesn't exist yet, skip silently
+                }
+            }
+
+            // Update summary
+            document.getElementById('total-assets').textContent = totalAssets;
+            document.getElementById('active-assets').textContent = activeAssets;
+            document.getElementById('removed-assets').textContent = removedAssets;
+        }
+
+        // Load and display service update status
+        async function loadServiceUpdateStatus() {
+            try {
+                const response = await fetch('data/metadata.json');
+                if (!response.ok) return;
+
+                const metadata = await response.json();
+                const grid = document.getElementById('update-status-grid');
+
+                for (const [key, service] of Object.entries(metadata.services)) {
+                    const status = getFreshnessStatus(service.last_updated, service.schedule);
+                    const relativeTime = formatRelativeTime(service.last_updated);
+
+                    const card = document.createElement('div');
+                    card.className = 'update-status-card';
+                    card.innerHTML = `
+                        <div>
+                            <div class="service-name">${service.name}</div>
+                            <div class="update-time">${relativeTime} (${service.schedule})</div>
+                        </div>
+                        <div class="status-indicator ${status}"></div>
+                    `;
+                    grid.appendChild(card);
+                }
+            } catch (e) {
+                console.warn('Could not load metadata:', e);
+            }
+        }
+
+        loadStats();
+        loadServiceUpdateStatus();
+    </script>
+</body>
+</html>

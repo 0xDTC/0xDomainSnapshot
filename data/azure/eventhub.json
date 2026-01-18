@@ -1,0 +1,22 @@
+[
+  {
+    "namespace_name": "prod-eventhub-ns",
+    "resource_group": "rg-prod-streaming",
+    "location": "eastus",
+    "sku": "Standard",
+    "capacity": 2,
+    "event_hubs_count": 4,
+    "endpoint": "sb://prod-eventhub-ns.servicebus.windows.net/",
+    "status": "active"
+  },
+  {
+    "namespace_name": "analytics-eventhub-ns",
+    "resource_group": "rg-analytics",
+    "location": "westus2",
+    "sku": "Basic",
+    "capacity": 1,
+    "event_hubs_count": 2,
+    "endpoint": "sb://analytics-eventhub-ns.servicebus.windows.net/",
+    "status": "active"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "pool_id": "us-east-1_AbCdEfGhI",
+    "pool_name": "prod-user-pool",
+    "pool_type": "User Pool",
+    "user_count": 15000,
+    "mfa_config": "OPTIONAL",
+    "created_date": "2023-03-15",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "pool_id": "us-east-1:12345678-1234-1234-1234-123456789012",
+    "pool_name": "prod-identity-pool",
+    "pool_type": "Identity Pool",
+    "user_count": null,
+    "mfa_config": null,
+    "created_date": "2023-03-15",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "pool_id": "us-west-2_XyZaBcDeF",
+    "pool_name": "legacy-users",
+    "pool_type": "User Pool",
+    "user_count": 0,
+    "mfa_config": "OFF",
+    "created_date": "2021-06-01",
+    "region": "us-west-2",
+    "status": "removed"
+  }
+]

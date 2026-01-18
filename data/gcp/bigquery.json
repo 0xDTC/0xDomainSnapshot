@@ -1,0 +1,32 @@
+[
+  {
+    "dataset_id": "analytics",
+    "project": "my-gcp-project",
+    "location": "US",
+    "tables_count": 25,
+    "views_count": 10,
+    "default_table_expiration_ms": null,
+    "created": "2023-01-15",
+    "status": "active"
+  },
+  {
+    "dataset_id": "raw_events",
+    "project": "my-gcp-project",
+    "location": "US",
+    "tables_count": 8,
+    "views_count": 2,
+    "default_table_expiration_ms": 7776000000,
+    "created": "2023-03-20",
+    "status": "active"
+  },
+  {
+    "dataset_id": "staging_data",
+    "project": "my-gcp-project",
+    "location": "US",
+    "tables_count": 5,
+    "views_count": 0,
+    "default_table_expiration_ms": 86400000,
+    "created": "2024-01-01",
+    "status": "active"
+  }
+]

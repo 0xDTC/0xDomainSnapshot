@@ -1,0 +1,35 @@
+[
+  {
+    "name": "prod-aks-cluster",
+    "resource_group": "rg-prod-kubernetes",
+    "location": "eastus",
+    "kubernetes_version": "1.28.3",
+    "node_count": 5,
+    "node_vm_size": "Standard_D4s_v3",
+    "provisioning_state": "Succeeded",
+    "fqdn": "prod-aks-cluster-dns-12345.hcp.eastus.azmk8s.io",
+    "status": "active"
+  },
+  {
+    "name": "staging-aks-cluster",
+    "resource_group": "rg-staging-kubernetes",
+    "location": "westus2",
+    "kubernetes_version": "1.27.9",
+    "node_count": 3,
+    "node_vm_size": "Standard_D2s_v3",
+    "provisioning_state": "Succeeded",
+    "fqdn": "staging-aks-cluster-dns-67890.hcp.westus2.azmk8s.io",
+    "status": "active"
+  },
+  {
+    "name": "dev-aks-old",
+    "resource_group": "rg-dev-kubernetes",
+    "location": "centralus",
+    "kubernetes_version": "1.25.6",
+    "node_count": 0,
+    "node_vm_size": "Standard_D2s_v3",
+    "provisioning_state": "Deleting",
+    "fqdn": null,
+    "status": "removed"
+  }
+]

@@ -1,0 +1,58 @@
+[
+    {
+        "name": "prod-web-alb",
+        "type": "application",
+        "dns_name": "prod-web-alb-123456789.us-east-1.elb.amazonaws.com",
+        "scheme": "internet-facing",
+        "vpc_id": "vpc-12345678",
+        "region": "us-east-1",
+        "az_count": 3,
+        "target_groups": 2,
+        "listeners": 2,
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "name": "internal-api-nlb",
+        "type": "network",
+        "dns_name": "internal-api-nlb-987654321.us-east-1.elb.amazonaws.com",
+        "scheme": "internal",
+        "vpc_id": "vpc-12345678",
+        "region": "us-east-1",
+        "az_count": 2,
+        "target_groups": 1,
+        "listeners": 1,
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "name": "staging-alb",
+        "type": "application",
+        "dns_name": "staging-alb-555555555.us-west-2.elb.amazonaws.com",
+        "scheme": "internet-facing",
+        "vpc_id": "vpc-87654321",
+        "region": "us-west-2",
+        "az_count": 2,
+        "target_groups": 1,
+        "listeners": 2,
+        "status": "active",
+        "discovery_date": "2025-01-08",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "name": "legacy-classic-lb",
+        "type": "classic",
+        "dns_name": null,
+        "scheme": "internet-facing",
+        "vpc_id": "vpc-12345678",
+        "region": "us-east-1",
+        "az_count": 1,
+        "target_groups": 0,
+        "listeners": 1,
+        "status": "removed",
+        "discovery_date": "2024-01-01",
+        "last_seen": "2024-09-15"
+    }
+]

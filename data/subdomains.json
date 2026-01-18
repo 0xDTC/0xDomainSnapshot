@@ -1,0 +1,72 @@
+[
+    {
+        "domain": "example.com",
+        "subdomain": "@",
+        "type": "A",
+        "data": "192.168.1.100",
+        "source": "GoDaddy",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "domain": "example.com",
+        "subdomain": "www",
+        "type": "CNAME",
+        "data": "example.com",
+        "source": "GoDaddy",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "domain": "example.com",
+        "subdomain": "api",
+        "type": "A",
+        "data": "192.168.1.101",
+        "source": "GoDaddy",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "domain": "example.com",
+        "subdomain": "mail",
+        "type": "MX",
+        "data": "10 mail.example.com",
+        "source": "GoDaddy",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "domain": "example.com",
+        "subdomain": "old-api",
+        "type": "A",
+        "data": "192.168.1.50",
+        "source": "GoDaddy",
+        "status": "removed",
+        "discovery_date": "2024-06-01",
+        "last_seen": "2024-12-15"
+    },
+    {
+        "domain": "mycompany.io",
+        "subdomain": "@",
+        "type": "A",
+        "data": "10.0.0.1",
+        "source": "Cloudflare",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "domain": "mycompany.io",
+        "subdomain": "app",
+        "type": "CNAME",
+        "data": "app.mycompany.io.cdn.cloudflare.net",
+        "source": "Cloudflare",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "state_machine_name": "order-processing-workflow",
+    "state_machine_arn": "arn:aws:states:us-east-1:123456789012:stateMachine:order-processing-workflow",
+    "type": "STANDARD",
+    "executions_running": 3,
+    "created_date": "2024-01-20",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "state_machine_name": "data-pipeline",
+    "state_machine_arn": "arn:aws:states:us-east-1:123456789012:stateMachine:data-pipeline",
+    "type": "STANDARD",
+    "executions_running": 1,
+    "created_date": "2024-02-15",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "state_machine_name": "user-onboarding",
+    "state_machine_arn": "arn:aws:states:us-east-1:123456789012:stateMachine:user-onboarding",
+    "type": "EXPRESS",
+    "executions_running": 0,
+    "created_date": "2024-03-01",
+    "region": "us-east-1",
+    "status": "active"
+  }
+]

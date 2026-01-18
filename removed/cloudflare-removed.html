@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Removed Assets - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+    <main>
+        <div class="page-header provider-cloudflare"><h1>Cloudflare Removed Assets</h1><p>Historical record of all removed Cloudflare resources</p></div>
+        <div class="stats-bar">
+            <div class="stat-card removed"><div class="stat-value" id="stat-total">-</div><div class="stat-label">Total Removed</div></div>
+        </div>
+        <div class="table-controls">
+            <div class="filter-controls">
+                <select id="serviceSelector" class="filter-select">
+                    <option value="all">All Services</option>
+                    <option value="workers">Workers</option>
+                    <option value="pages">Pages</option>
+                    <option value="r2">R2 Storage</option>
+                    <option value="kv">KV Namespaces</option>
+                    <option value="d1">D1 Databases</option>
+                    <option value="queues">Queues</option>
+                    <option value="durable-objects">Durable Objects</option>
+                    <option value="images">Images</option>
+                    <option value="stream">Stream</option>
+                    <option value="tunnels">Tunnels</option>
+                    <option value="access">Access Apps</option>
+                </select>
+                <div class="date-range-filter">
+                    <label>From:</label>
+                    <input type="date" id="dateFrom">
+                    <label>To:</label>
+                    <input type="date" id="dateTo">
+                    <button class="btn btn-secondary" id="clearDatesBtn">Clear</button>
+                </div>
+            </div>
+            <div class="search-box"><input type="text" id="globalSearch" placeholder="Search..."></div>
+            <button class="btn btn-secondary" id="exportBtn">Export CSV</button>
+        </div>
+        <div id="table-container"></div>
+    </main>
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const serviceConfigs = {
+            workers: { file: 'workers.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Routes', data: 'routes' },
+                { title: 'Created', data: 'created' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            pages: { file: 'pages.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Production Branch', data: 'production_branch' },
+                { title: 'Created', data: 'created' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            r2: { file: 'r2.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Bucket Name', data: 'name' },
+                { title: 'Location', data: 'location' },
+                { title: 'Created', data: 'created' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            kv: { file: 'kv.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Title', data: 'title' },
+                { title: 'Created', data: 'created' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            d1: { file: 'd1.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Version', data: 'version' },
+                { title: 'Created', data: 'created' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            queues: { file: 'queues.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Created', data: 'created' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            'durable-objects': { file: 'durable-objects.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Class', data: 'class' },
+                { title: 'Created', data: 'created' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            images: { file: 'images.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'ID', data: 'id' },
+                { title: 'Filename', data: 'filename' },
+                { title: 'Uploaded', data: 'uploaded' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            stream: { file: 'stream.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Duration', data: 'duration' },
+                { title: 'Created', data: 'created' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            tunnels: { file: 'tunnels.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Connections', data: 'connections' },
+                { title: 'Created', data: 'created' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]},
+            access: { file: 'access.json', columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Name', data: 'name' },
+                { title: 'Type', data: 'type' },
+                { title: 'Domain', data: 'domain' },
+                { title: 'Removed Date', data: 'removed_date' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ]}
+        };
+
+        const allServicesColumns = [
+            { title: 'Account', data: 'account' },
+            { title: 'Service', data: 'service_type', render: (val) => `<span class="badge badge-info">${val}</span>` },
+            { title: 'Name', data: 'name' },
+            { title: 'Removed Date', data: 'removed_date' },
+            { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+        ];
+
+        let currentDt = null;
+
+        function filterByDateRange(data) {
+            const dateFrom = document.getElementById('dateFrom').value;
+            const dateTo = document.getElementById('dateTo').value;
+            if (!dateFrom && !dateTo) return data;
+            return data.filter(item => {
+                if (!item.removed_date || item.removed_date === 'N/A') return true;
+                const itemDate = new Date(item.removed_date);
+                if (isNaN(itemDate.getTime())) return true;
+                if (dateFrom && new Date(dateFrom) > itemDate) return false;
+                if (dateTo && new Date(dateTo) < itemDate) return false;
+                return true;
+            });
+        }
+
+        async function loadServiceData(serviceKey) {
+            if (currentDt) { currentDt.destroy(); currentDt = null; }
+            const searchInput = document.getElementById('globalSearch');
+            if (searchInput) searchInput.value = '';
+
+            const container = document.getElementById('table-container');
+            container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><span>Loading data...</span></div>';
+
+            if (serviceKey === 'all') {
+                let allData = [];
+                for (const [key, config] of Object.entries(serviceConfigs)) {
+                    try {
+                        const response = await fetch('../data/cloudflare/' + config.file);
+                        if (response.ok) {
+                            const data = await response.json();
+                            const removed = data.filter(item => item.status === 'removed');
+                            removed.forEach(item => {
+                                allData.push({
+                                    account: item.account || item.account_id || 'N/A',
+                                    service_type: key.toUpperCase().replace('-', ' '),
+                                    name: item.name || item.title || item.id || 'N/A',
+                                    removed_date: item.removed_date || 'N/A',
+                                    status: item.status
+                                });
+                            });
+                        }
+                    } catch (e) {}
+                }
+
+                allData = filterByDateRange(allData);
+                document.getElementById('stat-total').textContent = allData.length;
+                container.innerHTML = '';
+                currentDt = new DataTable('table-container', { data: allData, columns: allServicesColumns, rowClass: () => 'removed' });
+            } else {
+                const config = serviceConfigs[serviceKey];
+                try {
+                    const response = await fetch('../data/cloudflare/' + config.file);
+                    if (response.ok) {
+                        const data = await response.json();
+                        let removed = data.filter(item => item.status === 'removed');
+                        removed = filterByDateRange(removed);
+
+                        document.getElementById('stat-total').textContent = removed.length;
+                        container.innerHTML = '';
+                        currentDt = new DataTable('table-container', { data: removed, columns: config.columns, rowClass: () => 'removed' });
+                    } else {
+                        container.innerHTML = '<div class="empty-state"><div class="empty-state-title">No data available</div></div>';
+                        document.getElementById('stat-total').textContent = '0';
+                    }
+                } catch (e) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-state-title">Failed to load data</div></div>';
+                    document.getElementById('stat-total').textContent = '0';
+                }
+            }
+        }
+
+        document.getElementById('serviceSelector').addEventListener('change', (e) => {
+            const service = e.target.value;
+            const url = new URL(window.location);
+            ['page', 'sortCol', 'sortDir', 'search', 'rows'].forEach(p => url.searchParams.delete(p));
+            url.searchParams.forEach((value, key) => {
+                if (key.startsWith('filter_')) url.searchParams.delete(key);
+            });
+            if (service === 'all') {
+                url.searchParams.delete('service');
+            } else {
+                url.searchParams.set('service', service);
+            }
+            window.history.replaceState({}, '', url);
+            loadServiceData(service);
+        });
+
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            if (currentDt) {
+                const service = document.getElementById('serviceSelector').value;
+                currentDt.exportCSV(`cloudflare-${service}-removed.csv`);
+            }
+        });
+
+        document.getElementById('dateFrom').addEventListener('change', () => loadServiceData(document.getElementById('serviceSelector').value));
+        document.getElementById('dateTo').addEventListener('change', () => loadServiceData(document.getElementById('serviceSelector').value));
+        document.getElementById('clearDatesBtn').addEventListener('click', () => {
+            document.getElementById('dateFrom').value = '';
+            document.getElementById('dateTo').value = '';
+            loadServiceData(document.getElementById('serviceSelector').value);
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialService = urlParams.get('service') || 'all';
+        document.getElementById('serviceSelector').value = initialService;
+        loadServiceData(initialService);
+    </script>
+</body>
+</html>

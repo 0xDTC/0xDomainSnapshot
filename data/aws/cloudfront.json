@@ -1,0 +1,32 @@
+[
+  {
+    "distribution_id": "E1A2B3C4D5E6F7",
+    "domain_name": "d1234567890abc.cloudfront.net",
+    "origin": "my-app-bucket.s3.amazonaws.com",
+    "price_class": "PriceClass_100",
+    "enabled": true,
+    "aliases": ["cdn.example.com", "assets.example.com"],
+    "ssl_certificate": "arn:aws:acm:us-east-1:123456789012:certificate/abc123",
+    "status": "active"
+  },
+  {
+    "distribution_id": "E2B3C4D5E6F7G8",
+    "domain_name": "d0987654321xyz.cloudfront.net",
+    "origin": "api.example.com",
+    "price_class": "PriceClass_All",
+    "enabled": true,
+    "aliases": ["api-cdn.example.com"],
+    "ssl_certificate": "arn:aws:acm:us-east-1:123456789012:certificate/def456",
+    "status": "active"
+  },
+  {
+    "distribution_id": "E3C4D5E6F7G8H9",
+    "domain_name": "d1122334455aaa.cloudfront.net",
+    "origin": "old-static.s3.amazonaws.com",
+    "price_class": "PriceClass_100",
+    "enabled": false,
+    "aliases": [],
+    "ssl_certificate": null,
+    "status": "removed"
+  }
+]

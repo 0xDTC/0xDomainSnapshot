@@ -1,0 +1,35 @@
+[
+  {
+    "name": "order-processor-func",
+    "resource_group": "rg-prod-functions",
+    "location": "eastus",
+    "runtime": "dotnet-isolated",
+    "runtime_version": "8.0",
+    "sku": "EP1",
+    "default_hostname": "order-processor-func.azurewebsites.net",
+    "state": "Running",
+    "status": "active"
+  },
+  {
+    "name": "image-resizer-func",
+    "resource_group": "rg-prod-functions",
+    "location": "eastus",
+    "runtime": "node",
+    "runtime_version": "18",
+    "sku": "Y1",
+    "default_hostname": "image-resizer-func.azurewebsites.net",
+    "state": "Running",
+    "status": "active"
+  },
+  {
+    "name": "legacy-webhook-func",
+    "resource_group": "rg-legacy",
+    "location": "westus",
+    "runtime": "node",
+    "runtime_version": "14",
+    "sku": "Y1",
+    "default_hostname": "legacy-webhook-func.azurewebsites.net",
+    "state": "Stopped",
+    "status": "removed"
+  }
+]

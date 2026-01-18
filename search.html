@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Search - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+        .search-hero {
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .search-hero h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        .search-hero p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        .global-search-container {
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        .global-search-input-wrapper {
+            position: relative;
+        }
+        .global-search-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            font-size: 16px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+        .global-search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.15);
+        }
+        .global-search-input::placeholder {
+            color: var(--text-muted);
+        }
+        .search-filters {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.4rem 0.75rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .filter-chip:hover {
+            border-color: var(--text-muted);
+            color: var(--text-primary);
+        }
+        .filter-chip.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        .filter-chip input {
+            display: none;
+        }
+        .search-stats {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        .search-stats strong {
+            color: var(--accent);
+        }
+        .results-container {
+            margin-bottom: 2rem;
+        }
+        .result-group {
+            margin-bottom: 1.5rem;
+        }
+        .result-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .result-group-header .provider-badge {
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .result-group-header .count {
+            margin-left: auto;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .result-list {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+        }
+        .result-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-light);
+            transition: background 0.15s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .result-item:hover {
+            background: var(--bg-tertiary);
+        }
+        .result-item .name {
+            font-weight: 500;
+            color: var(--text-primary);
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .result-item .name mark {
+            background: rgba(88, 166, 255, 0.3);
+            color: var(--text-primary);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+        .result-item .meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+        .result-item .account-badge {
+            padding: 0.15rem 0.4rem;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            font-size: 11px;
+        }
+        .no-results {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+        .no-results-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .loading-indicator {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+        .loading-indicator .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        /* Provider colors */
+        .provider-aws { background: #ff9900; color: #000; }
+        .provider-azure { background: #0078d4; color: #fff; }
+        .provider-gcp { background: #4285f4; color: #fff; }
+        .provider-cloudflare { background: #f38020; color: #fff; }
+        .provider-digitalocean { background: #0080ff; color: #fff; }
+        .provider-oracle { background: #c74634; color: #fff; }
+        .provider-alibaba { background: #ff6a00; color: #fff; }
+        .provider-dns { background: #58a6ff; color: #000; }
+    </style>
+</head>
+<body>
+    <script src="static/js/nav.js"></script>
+
+    <main>
+        <div class="search-hero">
+            <h1>Global Asset Search</h1>
+            <p>Search across all cloud providers and services at once</p>
+        </div>
+
+        <div class="global-search-container">
+            <div class="global-search-input-wrapper">
+                <input type="text"
+                       id="searchInput"
+                       class="global-search-input"
+                       placeholder="Search by name, IP, account, region, or any attribute..."
+                       autofocus>
+            </div>
+            <div class="search-filters">
+                <label class="filter-chip active">
+                    <input type="checkbox" value="all" checked> All Providers
+                </label>
+                <label class="filter-chip">
+                    <input type="checkbox" value="aws"> AWS
+                </label>
+                <label class="filter-chip">
+                    <input type="checkbox" value="azure"> Azure
+                </label>
+                <label class="filter-chip">
+                    <input type="checkbox" value="gcp"> GCP
+                </label>
+                <label class="filter-chip">
+                    <input type="checkbox" value="cloudflare"> Cloudflare
+                </label>
+                <label class="filter-chip">
+                    <input type="checkbox" value="digitalocean"> DigitalOcean
+                </label>
+                <label class="filter-chip">
+                    <input type="checkbox" value="oracle"> Oracle
+                </label>
+                <label class="filter-chip">
+                    <input type="checkbox" value="alibaba"> Alibaba
+                </label>
+                <label class="filter-chip">
+                    <input type="checkbox" value="dns"> DNS
+                </label>
+            </div>
+        </div>
+
+        <div id="searchStats" class="search-stats" style="display: none;"></div>
+
+        <div id="resultsContainer" class="results-container">
+            <div class="no-results">
+                <div class="no-results-icon">&#128269;</div>
+                <div>Enter a search term to find assets across all providers</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Data sources organized by provider
+        const dataSources = {
+            dns: {
+                label: 'DNS',
+                services: {
+                    'domains': { url: 'data/domains.json', label: 'Domains', page: 'dns/domains.html', nameField: 'domain' },
+                    'subdomains': { url: 'data/subdomains.json', label: 'Subdomains', page: 'dns/subdomains.html', nameField: 'subdomain' }
+                }
+            },
+            aws: {
+                label: 'AWS',
+                services: {
+                    'ec2': { url: 'data/aws/ec2.json', label: 'EC2 Instances', page: 'aws/ec2.html', nameField: 'name' },
+                    'eks': { url: 'data/aws/eks.json', label: 'EKS Clusters', page: 'aws/eks.html', nameField: 'cluster_name' },
+                    'ecs': { url: 'data/aws/ecs.json', label: 'ECS Clusters', page: 'aws/ecs.html', nameField: 'cluster_name' },
+                    'lambda': { url: 'data/aws/lambda.json', label: 'Lambda Functions', page: 'aws/lambda.html', nameField: 'function_name' },
+                    'rds': { url: 'data/aws/rds.json', label: 'RDS Databases', page: 'aws/rds.html', nameField: 'db_identifier' },
+                    'dynamodb': { url: 'data/aws/dynamodb.json', label: 'DynamoDB Tables', page: 'aws/dynamodb.html', nameField: 'table_name' },
+                    's3': { url: 'data/aws/s3.json', label: 'S3 Buckets', page: 'aws/s3.html', nameField: 'bucket_name' },
+                    'iam': { url: 'data/aws/iam.json', label: 'IAM Users', page: 'aws/iam.html', nameField: 'user_name' },
+                    'vpc': { url: 'data/aws/vpc.json', label: 'VPCs', page: 'aws/vpc.html', nameField: 'vpc_name' },
+                    'elb': { url: 'data/aws/elb.json', label: 'Load Balancers', page: 'aws/elb.html', nameField: 'name' },
+                    'cloudfront': { url: 'data/aws/cloudfront.json', label: 'CloudFront', page: 'aws/cloudfront.html', nameField: 'domain_name' },
+                    'sqs': { url: 'data/aws/sqs.json', label: 'SQS Queues', page: 'aws/sqs.html', nameField: 'queue_name' },
+                    'sns': { url: 'data/aws/sns.json', label: 'SNS Topics', page: 'aws/sns.html', nameField: 'topic_name' }
+                }
+            },
+            azure: {
+                label: 'Azure',
+                services: {
+                    'vms': { url: 'data/azure/vms.json', label: 'Virtual Machines', page: 'azure/vms.html', nameField: 'vm_name' },
+                    'aks': { url: 'data/azure/aks.json', label: 'AKS Clusters', page: 'azure/aks.html', nameField: 'cluster_name' },
+                    'appservice': { url: 'data/azure/appservice.json', label: 'App Service', page: 'azure/appservice.html', nameField: 'app_name' },
+                    'functions': { url: 'data/azure/functions.json', label: 'Functions', page: 'azure/functions.html', nameField: 'function_name' },
+                    'sql': { url: 'data/azure/sql.json', label: 'SQL Databases', page: 'azure/sql.html', nameField: 'database_name' },
+                    'storage': { url: 'data/azure/storage.json', label: 'Storage Accounts', page: 'azure/storage.html', nameField: 'storage_name' },
+                    'keyvault': { url: 'data/azure/keyvault.json', label: 'Key Vault', page: 'azure/keyvault.html', nameField: 'vault_name' }
+                }
+            },
+            gcp: {
+                label: 'GCP',
+                services: {
+                    'compute': { url: 'data/gcp/compute.json', label: 'Compute Instances', page: 'gcp/compute.html', nameField: 'instance_name' },
+                    'gke': { url: 'data/gcp/gke.json', label: 'GKE Clusters', page: 'gcp/gke.html', nameField: 'cluster_name' },
+                    'cloudrun': { url: 'data/gcp/cloudrun.json', label: 'Cloud Run', page: 'gcp/cloudrun.html', nameField: 'service_name' },
+                    'functions': { url: 'data/gcp/functions.json', label: 'Cloud Functions', page: 'gcp/functions.html', nameField: 'function_name' },
+                    'cloudsql': { url: 'data/gcp/cloudsql.json', label: 'Cloud SQL', page: 'gcp/cloudsql.html', nameField: 'instance_name' },
+                    'gcs': { url: 'data/gcp/gcs.json', label: 'Cloud Storage', page: 'gcp/gcs.html', nameField: 'bucket_name' },
+                    'pubsub': { url: 'data/gcp/pubsub.json', label: 'Pub/Sub', page: 'gcp/pubsub.html', nameField: 'topic_name' }
+                }
+            },
+            cloudflare: {
+                label: 'Cloudflare',
+                services: {
+                    'workers': { url: 'data/cloudflare/workers.json', label: 'Workers', page: 'cloudflare/workers.html', nameField: 'worker_name' },
+                    'pages': { url: 'data/cloudflare/pages.json', label: 'Pages', page: 'cloudflare/pages.html', nameField: 'project_name' },
+                    'r2': { url: 'data/cloudflare/r2.json', label: 'R2 Storage', page: 'cloudflare/r2.html', nameField: 'bucket_name' },
+                    'kv': { url: 'data/cloudflare/kv.json', label: 'KV Namespaces', page: 'cloudflare/kv.html', nameField: 'namespace_name' },
+                    'd1': { url: 'data/cloudflare/d1.json', label: 'D1 Databases', page: 'cloudflare/d1.html', nameField: 'database_name' },
+                    'tunnels': { url: 'data/cloudflare/tunnels.json', label: 'Tunnels', page: 'cloudflare/tunnels.html', nameField: 'tunnel_name' }
+                }
+            },
+            digitalocean: {
+                label: 'DigitalOcean',
+                services: {
+                    'droplets': { url: 'data/digitalocean/droplets.json', label: 'Droplets', page: 'digitalocean/droplets.html', nameField: 'droplet_name' },
+                    'kubernetes': { url: 'data/digitalocean/kubernetes.json', label: 'Kubernetes', page: 'digitalocean/kubernetes.html', nameField: 'cluster_name' },
+                    'apps': { url: 'data/digitalocean/apps.json', label: 'App Platform', page: 'digitalocean/apps.html', nameField: 'app_name' },
+                    'databases': { url: 'data/digitalocean/databases.json', label: 'Databases', page: 'digitalocean/databases.html', nameField: 'db_name' },
+                    'spaces': { url: 'data/digitalocean/spaces.json', label: 'Spaces', page: 'digitalocean/spaces.html', nameField: 'space_name' }
+                }
+            },
+            oracle: {
+                label: 'Oracle',
+                services: {
+                    'compute': { url: 'data/oracle/compute.json', label: 'Compute Instances', page: 'oracle/compute.html', nameField: 'instance_name' },
+                    'oke': { url: 'data/oracle/oke.json', label: 'OKE Clusters', page: 'oracle/oke.html', nameField: 'cluster_name' },
+                    'database': { url: 'data/oracle/database.json', label: 'Databases', page: 'oracle/database.html', nameField: 'db_name' },
+                    'objectstorage': { url: 'data/oracle/objectstorage.json', label: 'Object Storage', page: 'oracle/objectstorage.html', nameField: 'bucket_name' }
+                }
+            },
+            alibaba: {
+                label: 'Alibaba',
+                services: {
+                    'ecs': { url: 'data/alibaba/ecs.json', label: 'ECS Instances', page: 'alibaba/ecs.html', nameField: 'instance_name' },
+                    'ack': { url: 'data/alibaba/ack.json', label: 'ACK Clusters', page: 'alibaba/ack.html', nameField: 'cluster_name' },
+                    'rds': { url: 'data/alibaba/rds.json', label: 'RDS Databases', page: 'alibaba/rds.html', nameField: 'db_name' },
+                    'oss': { url: 'data/alibaba/oss.json', label: 'OSS Buckets', page: 'alibaba/oss.html', nameField: 'bucket_name' }
+                }
+            }
+        };
+
+        // Cache for loaded data
+        let dataCache = {};
+        let isLoading = false;
+        let selectedProviders = new Set(['all']);
+
+        const searchInput = document.getElementById('searchInput');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const searchStats = document.getElementById('searchStats');
+        const filterChips = document.querySelectorAll('.filter-chip');
+
+        // Load all data on page load
+        async function loadAllData() {
+            isLoading = true;
+            showLoading();
+
+            for (const [providerKey, provider] of Object.entries(dataSources)) {
+                for (const [serviceKey, service] of Object.entries(provider.services)) {
+                    try {
+                        const response = await fetch(service.url);
+                        if (response.ok) {
+                            const data = await response.json();
+                            dataCache[`${providerKey}:${serviceKey}`] = {
+                                provider: providerKey,
+                                providerLabel: provider.label,
+                                service: serviceKey,
+                                serviceLabel: service.label,
+                                page: service.page,
+                                nameField: service.nameField,
+                                data: data
+                            };
+                        }
+                    } catch (e) {
+                        // Skip failed loads silently
+                    }
+                }
+            }
+
+            isLoading = false;
+            showInitialState();
+        }
+
+        function showLoading() {
+            resultsContainer.innerHTML = `
+                <div class="loading-indicator">
+                    <div class="spinner"></div>
+                    <div>Loading asset data...</div>
+                </div>
+            `;
+        }
+
+        function showInitialState() {
+            resultsContainer.innerHTML = `
+                <div class="no-results">
+                    <div class="no-results-icon">&#128269;</div>
+                    <div>Enter a search term to find assets across all providers</div>
+                </div>
+            `;
+            searchStats.style.display = 'none';
+        }
+
+        function showNoResults(query) {
+            resultsContainer.innerHTML = `
+                <div class="no-results">
+                    <div class="no-results-icon">&#128533;</div>
+                    <div>No results found for "<strong>${escapeHtml(query)}</strong>"</div>
+                    <p style="margin-top: 0.5rem; font-size: 13px;">Try a different search term or adjust your provider filters</p>
+                </div>
+            `;
+            searchStats.style.display = 'none';
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function highlightMatch(text, query) {
+            if (!text || !query) return escapeHtml(text || '');
+            const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escapedQuery})`, 'gi');
+            return escapeHtml(text).replace(regex, '<mark>$1</mark>');
+        }
+
+        function search(query) {
+            if (!query || query.length < 2) {
+                showInitialState();
+                return;
+            }
+
+            const lowerQuery = query.toLowerCase();
+            const results = {};
+            let totalCount = 0;
+
+            for (const [key, cached] of Object.entries(dataCache)) {
+                // Check provider filter
+                if (!selectedProviders.has('all') && !selectedProviders.has(cached.provider)) {
+                    continue;
+                }
+
+                const matches = cached.data.filter(item => {
+                    // Search all string fields
+                    return Object.values(item).some(val => {
+                        if (typeof val === 'string') {
+                            return val.toLowerCase().includes(lowerQuery);
+                        }
+                        return false;
+                    });
+                });
+
+                if (matches.length > 0) {
+                    if (!results[cached.provider]) {
+                        results[cached.provider] = {
+                            label: cached.providerLabel,
+                            services: []
+                        };
+                    }
+                    results[cached.provider].services.push({
+                        key: cached.service,
+                        label: cached.serviceLabel,
+                        page: cached.page,
+                        nameField: cached.nameField,
+                        matches: matches
+                    });
+                    totalCount += matches.length;
+                }
+            }
+
+            if (totalCount === 0) {
+                showNoResults(query);
+                return;
+            }
+
+            // Show stats
+            searchStats.innerHTML = `Found <strong>${totalCount}</strong> result${totalCount !== 1 ? 's' : ''} across ${Object.keys(results).length} provider${Object.keys(results).length !== 1 ? 's' : ''}`;
+            searchStats.style.display = 'block';
+
+            // Render results
+            let html = '';
+            for (const [providerKey, provider] of Object.entries(results)) {
+                for (const service of provider.services) {
+                    html += `
+                        <div class="result-group">
+                            <div class="result-group-header">
+                                <span class="provider-badge provider-${providerKey}">${provider.label}</span>
+                                <span>${service.label}</span>
+                                <span class="count">${service.matches.length} result${service.matches.length !== 1 ? 's' : ''}</span>
+                            </div>
+                            <div class="result-list">
+                    `;
+
+                    // Limit to first 10 per service
+                    const displayMatches = service.matches.slice(0, 10);
+                    for (const item of displayMatches) {
+                        const name = item[service.nameField] || item.name || item.id || 'Unknown';
+                        const account = item.account || '-';
+                        const region = item.region || item.location || item.zone || '';
+
+                        html += `
+                            <a href="${service.page}?search=${encodeURIComponent(query)}" class="result-item">
+                                <span class="name">${highlightMatch(name, query)}</span>
+                                <span class="meta">
+                                    <span class="account-badge">${escapeHtml(account)}</span>
+                                    ${region ? `<span>${escapeHtml(region)}</span>` : ''}
+                                    <span class="badge badge-${item.status === 'active' ? 'active' : 'removed'}">${item.status || 'unknown'}</span>
+                                </span>
+                            </a>
+                        `;
+                    }
+
+                    if (service.matches.length > 10) {
+                        html += `
+                            <a href="${service.page}?search=${encodeURIComponent(query)}" class="result-item" style="justify-content: center; color: var(--accent);">
+                                View all ${service.matches.length} results in ${service.label} &rarr;
+                            </a>
+                        `;
+                    }
+
+                    html += `
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            resultsContainer.innerHTML = html;
+        }
+
+        // Debounce search
+        let searchTimeout;
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const query = e.target.value.trim();
+                search(query);
+
+                // Update URL
+                const url = new URL(window.location);
+                if (query) {
+                    url.searchParams.set('q', query);
+                } else {
+                    url.searchParams.delete('q');
+                }
+                window.history.replaceState({}, '', url);
+            }, 300);
+        });
+
+        // Filter chip handling
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                const checkbox = chip.querySelector('input');
+                const value = checkbox.value;
+
+                if (value === 'all') {
+                    // Select "All" deselects others
+                    selectedProviders.clear();
+                    selectedProviders.add('all');
+                    filterChips.forEach(c => {
+                        c.classList.toggle('active', c.querySelector('input').value === 'all');
+                    });
+                } else {
+                    // Deselect "All" when selecting specific provider
+                    selectedProviders.delete('all');
+                    filterChips.forEach(c => {
+                        if (c.querySelector('input').value === 'all') {
+                            c.classList.remove('active');
+                        }
+                    });
+
+                    if (selectedProviders.has(value)) {
+                        selectedProviders.delete(value);
+                        chip.classList.remove('active');
+                    } else {
+                        selectedProviders.add(value);
+                        chip.classList.add('active');
+                    }
+
+                    // If nothing selected, select "All"
+                    if (selectedProviders.size === 0) {
+                        selectedProviders.add('all');
+                        filterChips.forEach(c => {
+                            if (c.querySelector('input').value === 'all') {
+                                c.classList.add('active');
+                            }
+                        });
+                    }
+                }
+
+                // Re-run search with current query
+                const query = searchInput.value.trim();
+                if (query.length >= 2) {
+                    search(query);
+                }
+            });
+        });
+
+        // Load query from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialQuery = urlParams.get('q');
+        if (initialQuery) {
+            searchInput.value = initialQuery;
+        }
+
+        // Initialize
+        loadAllData().then(() => {
+            if (initialQuery) {
+                search(initialQuery);
+            }
+        });
+
+        // Override nav search to redirect here
+        document.addEventListener('DOMContentLoaded', () => {
+            const navSearch = document.getElementById('globalSearch');
+            if (navSearch && window.location.pathname.includes('search.html')) {
+                navSearch.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

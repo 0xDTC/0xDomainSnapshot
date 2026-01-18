@@ -1,0 +1,62 @@
+[
+    {
+        "instance_name": "prod-web-instance-01",
+        "instance_id": "1234567890123456789",
+        "machine_type": "e2-standard-4",
+        "zone": "us-central1-a",
+        "internal_ip": "10.128.0.10",
+        "external_ip": "35.192.100.50",
+        "network": "prod-vpc",
+        "project": "my-prod-project",
+        "os": "debian-11",
+        "status": "active",
+        "power_state": "RUNNING",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "instance_name": "prod-api-instance-01",
+        "instance_id": "2345678901234567890",
+        "machine_type": "e2-standard-8",
+        "zone": "us-central1-b",
+        "internal_ip": "10.128.0.11",
+        "external_ip": null,
+        "network": "prod-vpc",
+        "project": "my-prod-project",
+        "os": "ubuntu-2204-lts",
+        "status": "active",
+        "power_state": "RUNNING",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "instance_name": "staging-vm-01",
+        "instance_id": "3456789012345678901",
+        "machine_type": "e2-small",
+        "zone": "us-west1-a",
+        "internal_ip": "10.138.0.5",
+        "external_ip": "35.230.50.100",
+        "network": "staging-vpc",
+        "project": "my-staging-project",
+        "os": "debian-11",
+        "status": "active",
+        "power_state": "TERMINATED",
+        "discovery_date": "2025-01-08",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "instance_name": "test-instance-001",
+        "instance_id": "4567890123456789012",
+        "machine_type": "e2-micro",
+        "zone": "us-central1-a",
+        "internal_ip": "10.128.0.50",
+        "external_ip": null,
+        "network": "default",
+        "project": "my-test-project",
+        "os": "ubuntu-2004-lts",
+        "status": "removed",
+        "power_state": "DELETED",
+        "discovery_date": "2024-05-01",
+        "last_seen": "2024-08-20"
+    }
+]

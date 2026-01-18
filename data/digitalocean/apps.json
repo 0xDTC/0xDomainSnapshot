@@ -1,0 +1,26 @@
+[
+  {
+    "id": "app-12345678-1234-1234-1234-123456789abc",
+    "name": "frontend-app",
+    "region": "nyc",
+    "tier": "professional",
+    "default_ingress": "https://frontend-app-abc12.ondigitalocean.app",
+    "live_url": "https://frontend-app-abc12.ondigitalocean.app",
+    "components_count": 2,
+    "phase": "ACTIVE",
+    "created_at": "2024-01-20T10:00:00Z",
+    "status": "active"
+  },
+  {
+    "id": "app-87654321-4321-4321-4321-abcdef123456",
+    "name": "api-backend",
+    "region": "sfo",
+    "tier": "professional",
+    "default_ingress": "https://api-backend-def34.ondigitalocean.app",
+    "live_url": "https://api-backend-def34.ondigitalocean.app",
+    "components_count": 3,
+    "phase": "ACTIVE",
+    "created_at": "2024-02-15T14:30:00Z",
+    "status": "active"
+  }
+]

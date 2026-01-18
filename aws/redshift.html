@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redshift Clusters - 0xDomainSnapshot</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <script src="../static/js/nav.js"></script>
+    <main>
+        <div class="page-header provider-aws">
+            <h1>AWS Redshift Clusters</h1>
+            <p>Data warehouse clusters across AWS accounts</p>
+        </div>
+        <div class="stats-bar">
+            <div class="stat-card total"><div class="stat-value" id="stat-total">-</div><div class="stat-label">Total</div></div>
+            <div class="stat-card active"><div class="stat-value" id="stat-active">-</div><div class="stat-label">Active</div></div>
+            <div class="stat-card removed"><div class="stat-value" id="stat-removed">-</div><div class="stat-label">Removed</div></div>
+        </div>
+        <div class="table-controls">
+            <div class="search-box"><input type="text" id="globalSearch" placeholder="Search..."></div>
+            <button class="btn btn-secondary" onclick="dt.exportCSV('redshift.csv')">Export CSV</button>
+        </div>
+        <div id="table-container"></div>
+    </main>
+    <script src="../static/js/datatable.js"></script>
+    <script>
+        const dt = new DataTable('table-container', {
+            dataUrl: '../data/aws/redshift.json',
+            filter: (row) => row.status !== 'removed',
+            columns: [
+                { title: 'Account', data: 'account' },
+                { title: 'Cluster ID', data: 'cluster_id' },
+                { title: 'Node Type', data: 'node_type' },
+                { title: 'Nodes', data: 'number_of_nodes' },
+                { title: 'Region', data: 'region' },
+                { title: 'Database', data: 'db_name' },
+                { title: 'Endpoint', data: 'endpoint', className: 'data-cell' },
+                { title: 'Encrypted', data: 'encrypted', render: (val) => val ? 'Yes' : 'No' },
+                { title: 'Status', data: 'status', render: (val) => renderBadge(val) }
+            ],
+            rowClass: (row) => row.status === 'removed' ? 'removed' : '',
+            onDataLoaded: (data) => updateStats(dt.getStats())
+        });
+    </script>
+</body>
+</html>

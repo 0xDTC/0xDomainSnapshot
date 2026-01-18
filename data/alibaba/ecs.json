@@ -1,0 +1,41 @@
+[
+  {
+    "instance_name": "prod-web-server-1",
+    "instance_id": "i-uf6abc123def456gh",
+    "instance_type": "ecs.g7.xlarge",
+    "region_id": "cn-hangzhou",
+    "zone_id": "cn-hangzhou-h",
+    "public_ip": "47.98.123.45",
+    "private_ip": "172.16.0.10",
+    "cpu": 4,
+    "memory_gb": 16,
+    "instance_status": "Running",
+    "status": "active"
+  },
+  {
+    "instance_name": "prod-api-server-1",
+    "instance_id": "i-uf6def456ghi789jk",
+    "instance_type": "ecs.g7.2xlarge",
+    "region_id": "cn-hangzhou",
+    "zone_id": "cn-hangzhou-i",
+    "public_ip": "47.98.234.56",
+    "private_ip": "172.16.0.20",
+    "cpu": 8,
+    "memory_gb": 32,
+    "instance_status": "Running",
+    "status": "active"
+  },
+  {
+    "instance_name": "old-test-instance",
+    "instance_id": "i-uf6ghi789jkl012mn",
+    "instance_type": "ecs.t5-lc1m1.small",
+    "region_id": "cn-shanghai",
+    "zone_id": "cn-shanghai-a",
+    "public_ip": null,
+    "private_ip": "172.17.0.5",
+    "cpu": 1,
+    "memory_gb": 1,
+    "instance_status": "Stopped",
+    "status": "removed"
+  }
+]

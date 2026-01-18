@@ -1,0 +1,42 @@
+[
+    {
+        "zone_id": "Z1234567890ABC",
+        "zone_name": "example.com",
+        "record_count": 45,
+        "private_zone": false,
+        "comment": "Production domain",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "zone_id": "Z2345678901BCD",
+        "zone_name": "internal.company.local",
+        "record_count": 120,
+        "private_zone": true,
+        "comment": "Internal DNS",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "zone_id": "Z3456789012CDE",
+        "zone_name": "api-gateway.org",
+        "record_count": 15,
+        "private_zone": false,
+        "comment": "API domain",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "zone_id": "Z4567890123DEF",
+        "zone_name": "old-service.net",
+        "record_count": 0,
+        "private_zone": false,
+        "comment": "Deprecated",
+        "status": "removed",
+        "discovery_date": "2024-01-01",
+        "last_seen": "2024-10-01"
+    }
+]

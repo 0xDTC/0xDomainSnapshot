@@ -1,0 +1,44 @@
+[
+  {
+    "db_name": "PRODDB",
+    "display_name": "Production Database",
+    "id": "ocid1.autonomousdatabase.oc1.iad.abc123",
+    "compartment_id": "ocid1.compartment.oc1..aaa111bbb222",
+    "db_workload": "OLTP",
+    "is_free_tier": false,
+    "cpu_core_count": 4,
+    "data_storage_size_in_tbs": 2,
+    "connection_string": "adb.us-ashburn-1.oraclecloud.com:1522/proddb_high.adb.oraclecloud.com",
+    "lifecycle_state": "AVAILABLE",
+    "region": "us-ashburn-1",
+    "status": "active"
+  },
+  {
+    "db_name": "ANALYTICSDB",
+    "display_name": "Analytics Database",
+    "id": "ocid1.autonomousdatabase.oc1.iad.def456",
+    "compartment_id": "ocid1.compartment.oc1..aaa111bbb222",
+    "db_workload": "DW",
+    "is_free_tier": false,
+    "cpu_core_count": 8,
+    "data_storage_size_in_tbs": 5,
+    "connection_string": "adb.us-ashburn-1.oraclecloud.com:1522/analyticsdb_high.adb.oraclecloud.com",
+    "lifecycle_state": "AVAILABLE",
+    "region": "us-ashburn-1",
+    "status": "active"
+  },
+  {
+    "db_name": "TESTDB",
+    "display_name": "Test Database",
+    "id": "ocid1.autonomousdatabase.oc1.phx.ghi789",
+    "compartment_id": "ocid1.compartment.oc1..ccc333ddd444",
+    "db_workload": "OLTP",
+    "is_free_tier": true,
+    "cpu_core_count": 1,
+    "data_storage_size_in_tbs": 0.02,
+    "connection_string": null,
+    "lifecycle_state": "TERMINATED",
+    "region": "us-phoenix-1",
+    "status": "removed"
+  }
+]

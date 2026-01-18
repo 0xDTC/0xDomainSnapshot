@@ -1,0 +1,24 @@
+[
+  {
+    "name": "prod-cosmos-account",
+    "resource_group": "rg-prod-data",
+    "location": "eastus",
+    "kind": "GlobalDocumentDB",
+    "consistency_level": "Session",
+    "enable_multiple_write_locations": true,
+    "databases": 3,
+    "document_endpoint": "https://prod-cosmos-account.documents.azure.com:443/",
+    "status": "active"
+  },
+  {
+    "name": "analytics-cosmos",
+    "resource_group": "rg-analytics",
+    "location": "westus2",
+    "kind": "MongoDB",
+    "consistency_level": "Eventual",
+    "enable_multiple_write_locations": false,
+    "databases": 2,
+    "document_endpoint": "https://analytics-cosmos.documents.azure.com:443/",
+    "status": "active"
+  }
+]

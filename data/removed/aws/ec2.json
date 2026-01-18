@@ -1,0 +1,18 @@
+[
+    {
+        "instance_id": "i-0abc123def456",
+        "name": "old-prod-server",
+        "instance_type": "t3.medium",
+        "region": "us-east-1",
+        "removed_date": "2024-10-15",
+        "status": "removed"
+    },
+    {
+        "instance_id": "i-0def456ghi789",
+        "name": "deprecated-api",
+        "instance_type": "t3.small",
+        "region": "us-west-2",
+        "removed_date": "2024-11-20",
+        "status": "removed"
+    }
+]

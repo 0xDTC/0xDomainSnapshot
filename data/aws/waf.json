@@ -1,0 +1,22 @@
+[
+  {
+    "web_acl_name": "prod-web-acl",
+    "web_acl_id": "12345678-1234-1234-1234-123456789012",
+    "web_acl_arn": "arn:aws:wafv2:us-east-1:123456789012:regional/webacl/prod-web-acl/12345678-1234-1234-1234-123456789012",
+    "scope": "REGIONAL",
+    "rules_count": 8,
+    "associated_resources": 3,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "web_acl_name": "cloudfront-protection",
+    "web_acl_id": "87654321-4321-4321-4321-210987654321",
+    "web_acl_arn": "arn:aws:wafv2:us-east-1:123456789012:global/webacl/cloudfront-protection/87654321-4321-4321-4321-210987654321",
+    "scope": "CLOUDFRONT",
+    "rules_count": 5,
+    "associated_resources": 2,
+    "region": "global",
+    "status": "active"
+  }
+]

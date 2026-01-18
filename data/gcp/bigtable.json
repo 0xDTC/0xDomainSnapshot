@@ -1,0 +1,22 @@
+[
+  {
+    "instance_id": "prod-bigtable",
+    "project": "my-gcp-project",
+    "display_name": "Production Bigtable",
+    "instance_type": "PRODUCTION",
+    "cluster_count": 2,
+    "storage_type": "SSD",
+    "state": "READY",
+    "status": "active"
+  },
+  {
+    "instance_id": "timeseries-db",
+    "project": "my-gcp-project",
+    "display_name": "Time Series Database",
+    "instance_type": "PRODUCTION",
+    "cluster_count": 1,
+    "storage_type": "SSD",
+    "state": "READY",
+    "status": "active"
+  }
+]

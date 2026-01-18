@@ -1,0 +1,24 @@
+[
+  {
+    "name": "prodcontainerreg",
+    "resource_group": "rg-prod-containers",
+    "location": "eastus",
+    "sku": "Premium",
+    "login_server": "prodcontainerreg.azurecr.io",
+    "admin_enabled": false,
+    "creation_date": "2023-04-15",
+    "provisioning_state": "Succeeded",
+    "status": "active"
+  },
+  {
+    "name": "devcontainerreg",
+    "resource_group": "rg-dev-containers",
+    "location": "westus2",
+    "sku": "Standard",
+    "login_server": "devcontainerreg.azurecr.io",
+    "admin_enabled": true,
+    "creation_date": "2023-06-20",
+    "provisioning_state": "Succeeded",
+    "status": "active"
+  }
+]

@@ -1,0 +1,46 @@
+[
+    {
+        "zone_name": "example.com",
+        "resource_group": "rg-dns",
+        "location": "global",
+        "record_sets": 35,
+        "name_servers": ["ns1-01.azure-dns.com", "ns2-01.azure-dns.net"],
+        "subscription": "Production",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "zone_name": "internal.company.local",
+        "resource_group": "rg-dns",
+        "location": "global",
+        "record_sets": 150,
+        "name_servers": ["ns1-02.azure-dns.com", "ns2-02.azure-dns.net"],
+        "subscription": "Production",
+        "status": "active",
+        "discovery_date": "2025-01-10",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "zone_name": "staging.example.com",
+        "resource_group": "rg-staging-dns",
+        "location": "global",
+        "record_sets": 20,
+        "name_servers": ["ns1-03.azure-dns.com", "ns2-03.azure-dns.net"],
+        "subscription": "Development",
+        "status": "active",
+        "discovery_date": "2025-01-08",
+        "last_seen": "2025-01-16"
+    },
+    {
+        "zone_name": "old-project.net",
+        "resource_group": "rg-legacy-dns",
+        "location": "global",
+        "record_sets": 0,
+        "name_servers": [],
+        "subscription": "Production",
+        "status": "removed",
+        "discovery_date": "2024-01-01",
+        "last_seen": "2024-06-30"
+    }
+]

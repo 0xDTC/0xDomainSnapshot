@@ -1,0 +1,29 @@
+[
+  {
+    "name": "prod-assets",
+    "region": "nyc3",
+    "endpoint": "https://prod-assets.nyc3.digitaloceanspaces.com",
+    "cdn_endpoint": "https://prod-assets.nyc3.cdn.digitaloceanspaces.com",
+    "cdn_enabled": true,
+    "created_at": "2024-01-01T00:00:00Z",
+    "status": "active"
+  },
+  {
+    "name": "backups-storage",
+    "region": "sfo3",
+    "endpoint": "https://backups-storage.sfo3.digitaloceanspaces.com",
+    "cdn_endpoint": null,
+    "cdn_enabled": false,
+    "created_at": "2024-02-01T00:00:00Z",
+    "status": "active"
+  },
+  {
+    "name": "media-uploads",
+    "region": "ams3",
+    "endpoint": "https://media-uploads.ams3.digitaloceanspaces.com",
+    "cdn_endpoint": "https://media-uploads.ams3.cdn.digitaloceanspaces.com",
+    "cdn_enabled": true,
+    "created_at": "2024-03-01T00:00:00Z",
+    "status": "active"
+  }
+]

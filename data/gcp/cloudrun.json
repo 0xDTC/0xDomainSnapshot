@@ -1,0 +1,38 @@
+[
+  {
+    "name": "api-service",
+    "project": "my-gcp-project",
+    "region": "us-central1",
+    "url": "https://api-service-abc123-uc.a.run.app",
+    "revision": "api-service-00012-abc",
+    "container_image": "gcr.io/my-gcp-project/api-service:v1.5.0",
+    "cpu": "2",
+    "memory": "1Gi",
+    "max_instances": 10,
+    "status": "active"
+  },
+  {
+    "name": "webhook-handler",
+    "project": "my-gcp-project",
+    "region": "us-central1",
+    "url": "https://webhook-handler-def456-uc.a.run.app",
+    "revision": "webhook-handler-00008-def",
+    "container_image": "gcr.io/my-gcp-project/webhook-handler:v2.0.0",
+    "cpu": "1",
+    "memory": "512Mi",
+    "max_instances": 5,
+    "status": "active"
+  },
+  {
+    "name": "legacy-processor",
+    "project": "my-gcp-project",
+    "region": "us-west1",
+    "url": "https://legacy-processor-ghi789-uw.a.run.app",
+    "revision": "legacy-processor-00003-ghi",
+    "container_image": "gcr.io/my-gcp-project/legacy-processor:v0.9.0",
+    "cpu": "1",
+    "memory": "256Mi",
+    "max_instances": 1,
+    "status": "removed"
+  }
+]

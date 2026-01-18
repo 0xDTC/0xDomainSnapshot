@@ -1,0 +1,24 @@
+[
+  {
+    "name": "prod-servicebus",
+    "resource_group": "rg-prod-messaging",
+    "location": "eastus",
+    "sku": "Premium",
+    "capacity": 1,
+    "queues_count": 5,
+    "topics_count": 3,
+    "endpoint": "sb://prod-servicebus.servicebus.windows.net/",
+    "status": "active"
+  },
+  {
+    "name": "events-servicebus",
+    "resource_group": "rg-prod-events",
+    "location": "westus2",
+    "sku": "Standard",
+    "capacity": null,
+    "queues_count": 2,
+    "topics_count": 4,
+    "endpoint": "sb://events-servicebus.servicebus.windows.net/",
+    "status": "active"
+  }
+]

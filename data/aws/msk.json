@@ -1,0 +1,24 @@
+[
+  {
+    "cluster_name": "prod-kafka",
+    "cluster_arn": "arn:aws:kafka:us-east-1:123456789012:cluster/prod-kafka/abc123",
+    "kafka_version": "3.5.1",
+    "broker_node_type": "kafka.m5.large",
+    "number_of_broker_nodes": 3,
+    "state": "ACTIVE",
+    "zookeeper_connect": "z-1.prod-kafka.abc123.c1.kafka.us-east-1.amazonaws.com:2181",
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "cluster_name": "events-streaming",
+    "cluster_arn": "arn:aws:kafka:us-east-1:123456789012:cluster/events-streaming/def456",
+    "kafka_version": "3.4.0",
+    "broker_node_type": "kafka.t3.small",
+    "number_of_broker_nodes": 2,
+    "state": "ACTIVE",
+    "zookeeper_connect": "z-1.events-streaming.def456.c1.kafka.us-east-1.amazonaws.com:2181",
+    "region": "us-east-1",
+    "status": "active"
+  }
+]

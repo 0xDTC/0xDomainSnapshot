@@ -1,0 +1,23 @@
+[
+  {
+    "event_bus_name": "default",
+    "event_bus_arn": "arn:aws:events:us-east-1:123456789012:event-bus/default",
+    "rules_count": 12,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "event_bus_name": "orders-events",
+    "event_bus_arn": "arn:aws:events:us-east-1:123456789012:event-bus/orders-events",
+    "rules_count": 5,
+    "region": "us-east-1",
+    "status": "active"
+  },
+  {
+    "event_bus_name": "legacy-notifications",
+    "event_bus_arn": "arn:aws:events:us-west-2:123456789012:event-bus/legacy-notifications",
+    "rules_count": 0,
+    "region": "us-west-2",
+    "status": "removed"
+  }
+]

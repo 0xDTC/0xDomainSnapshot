@@ -1,0 +1,44 @@
+[
+  {
+    "display_name": "prod-app-server-1",
+    "id": "ocid1.instance.oc1.iad.abc123def456",
+    "compartment_id": "ocid1.compartment.oc1..aaa111bbb222",
+    "availability_domain": "AD-1",
+    "shape": "VM.Standard.E4.Flex",
+    "ocpus": 4,
+    "memory_in_gbs": 64,
+    "lifecycle_state": "RUNNING",
+    "public_ip": "129.213.123.45",
+    "private_ip": "10.0.0.5",
+    "region": "us-ashburn-1",
+    "status": "active"
+  },
+  {
+    "display_name": "db-server-1",
+    "id": "ocid1.instance.oc1.iad.def456ghi789",
+    "compartment_id": "ocid1.compartment.oc1..aaa111bbb222",
+    "availability_domain": "AD-2",
+    "shape": "VM.Standard.E4.Flex",
+    "ocpus": 8,
+    "memory_in_gbs": 128,
+    "lifecycle_state": "RUNNING",
+    "public_ip": null,
+    "private_ip": "10.0.1.10",
+    "region": "us-ashburn-1",
+    "status": "active"
+  },
+  {
+    "display_name": "old-test-instance",
+    "id": "ocid1.instance.oc1.iad.ghi789jkl012",
+    "compartment_id": "ocid1.compartment.oc1..ccc333ddd444",
+    "availability_domain": "AD-3",
+    "shape": "VM.Standard2.1",
+    "ocpus": 1,
+    "memory_in_gbs": 15,
+    "lifecycle_state": "TERMINATED",
+    "public_ip": null,
+    "private_ip": null,
+    "region": "us-phoenix-1",
+    "status": "removed"
+  }
+]
