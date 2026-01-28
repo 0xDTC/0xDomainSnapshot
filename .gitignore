@@ -16,6 +16,11 @@ service-account.json
 *.p12
 *.pfx
 *.keychain
+*.node_modules
+*.md
+!README.md
+CLAUDE.md
+API_DOCUMENTATION.md
 
 # Generated data (uncomment if you don't want to track data)
 # data/
@@ -50,6 +55,17 @@ ENV/
 # Node (if adding build tools later)
 node_modules/
 package-lock.json
+
+# Go
+backend/domainsnapshot
+backend/.env
+*.exe
+*.exe~
+*.dll
+*.dylib
+*.test
+*.out
+go.work
 
 # Temporary files
 *.tmp
